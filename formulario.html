@@ -753,7 +753,8 @@ function avisos() {
   $('menor').hidden = !menor;
   $('aviso-medico').hidden = !haySensible();
   $('aviso-embarazo').hidden = !S.checks.embarazo;
-  if (menor) { $('btn-adelante').disabled = true; }
+  /* Habilitar/deshabilitar según la edad en tiempo real */
+  $('btn-adelante').disabled = menor || !!S.checks.embarazo;
 }
 
 /* ---------- guardado y navegación ---------- */
@@ -833,7 +834,7 @@ function valida(n) {
   var ok = true, F = function (id, cond, msg) { if (!marcar(id, cond ? '' : msg)) ok = false; };
   if (n === 1) {
     F('alias', v('alias').length >= 2, 'Con dos letras basta, pero algo hay que poner.');
-    F('email', /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(v('email')), 'Ese correo no parece válido.');
+    F('email', /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(v('email').trim()), 'Ese correo no parece válido.');
     var e = num(v('edad'));
     F('edad', e != null && e >= 18 && e < 100, e != null && e < 18
       ? 'Este cuestionario es solo para mayores de edad.' : 'Pon tu edad en años.');
