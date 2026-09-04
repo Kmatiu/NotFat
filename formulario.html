@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16202B">
+<meta name="robots" content="noindex, nofollow">
+<title>Tu plan personal · cuestionario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #EEF1F4; --card: #FFFFFF; --ink: #16202B; --ink-soft: #3D4B59; --ink-mute: #6E7C8A;
+  --line: #D6DCE3; --line-soft: #E6EBEF;
+  --train: #2547D0; --train-wash: #E7EBFB;
+  --eat: #4C6B3C; --eat-wash: #E8EEE4;
+  --streak: #E0A100; --streak-wash: #FBF0D5;
+  --stop: #B03A2E; --stop-wash: #F7E5E2;
+  --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --r-s: 6px; --r: 12px; --r-l: 20px;
+  --top: env(safe-area-inset-top, 0px); --bot: env(safe-area-inset-bottom, 0px);
+  --ease: 180ms cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: calc(96px + var(--bot));
+}
+h1, h2, .num { font-family: var(--display); letter-spacing: -.02em; margin: 0; }
+h1 { font-size: 27px; font-weight: 800; line-height: 1.12; }
+h2 { font-size: 18px; font-weight: 700; }
+p { margin: 0 0 12px; max-width: 68ch; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; }
+:focus-visible { outline: 3px solid var(--train); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { *, *::before { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* progreso: una fila de diez marcas, la del paso actual más alta */
+.head {
+  position: sticky; top: 0; z-index: 20;
+  padding: calc(var(--top) + 14px) 18px 12px;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-soft);
+}
+.prog { display: flex; align-items: flex-end; gap: 4px; height: 22px; }
+.prog__s { flex: 1; height: 5px; border-radius: 3px; background: var(--line); transition: height var(--ease), background var(--ease); }
+.prog__s.is-done { background: var(--train); }
+.prog__s.is-now { height: 14px; background: var(--train); }
+.prog__t { margin-top: 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.prog__n { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+
+.wrap { padding: 22px 18px 20px; max-width: 640px; margin: 0 auto; }
+.step { display: none; }
+.step.is-on { display: block; }
+.step__kicker { font-size: 13px; font-weight: 700; color: var(--train); margin-bottom: 6px; }
+.step__intro { color: var(--ink-soft); font-size: 15px; margin: 10px 0 20px; }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; margin-bottom: 14px; }
+.f { margin-bottom: 16px; }
+.f:last-child { margin-bottom: 0; }
+label.lbl { display: block; font-weight: 600; font-size: 14.5px; margin-bottom: 6px; }
+label.lbl .req { color: var(--stop); }
+.help { font-size: 13px; color: var(--ink-mute); margin: -2px 0 7px; line-height: 1.4; }
+.field {
+  width: 100%; min-height: 46px; padding: 11px 12px;
+  border: 1px solid var(--line); border-radius: var(--r-s); background: var(--card); font-size: 16px;
+}
+textarea.field { min-height: 88px; resize: vertical; line-height: 1.45; }
+.field:focus { border-color: var(--train); outline: none; }
+.field.is-bad { border-color: var(--stop); background: var(--stop-wash); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.err { color: var(--stop); font-size: 13.5px; font-weight: 600; margin-top: 6px; display: none; }
+.err.is-on { display: block; }
+
+/* opciones */
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 11px;
+  border: 1px solid var(--line); border-radius: var(--r-s);
+  padding: 12px 13px; background: var(--card); text-align: left; width: 100%;
+}
+.opt.is-on { border-color: var(--train); background: var(--train-wash); }
+.opt__b { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); flex: none; margin-top: 1px; display: grid; place-items: center; }
+.opt.is-on .opt__b { border-color: var(--train); background: var(--train); }
+.opt.is-on .opt__b::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+.opt--sq .opt__b { border-radius: 5px; }
+.opt--sq.is-on .opt__b::after { content: '✓'; width: auto; height: auto; background: none; color: #fff; font-size: 12px; font-weight: 800; }
+.opt__t { font-weight: 600; font-size: 15px; }
+.opt__d { font-size: 13px; color: var(--ink-mute); margin-top: 2px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag {
+  padding: 9px 13px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--card); font-size: 14.5px; font-weight: 600;
+}
+.tag.is-on { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* fichas repetibles (lesiones, etc.) */
+.rep { border: 1px solid var(--line); border-radius: var(--r-s); padding: 13px; margin-bottom: 10px; background: var(--card); }
+.rep__h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.rep__n { font-weight: 700; font-size: 14px; color: var(--ink-mute); }
+.rep__x { color: var(--stop); font-size: 13.5px; font-weight: 600; }
+
+.nada {
+  display: flex; align-items: center; gap: 11px;
+  border: 1px dashed var(--line); border-radius: var(--r-s); padding: 13px; width: 100%;
+  background: transparent; text-align: left; margin-top: 10px;
+}
+.nada.is-on { border-style: solid; border-color: var(--eat); background: var(--eat-wash); }
+.nada .opt__b { border-radius: 5px; }
+.nada.is-on .opt__b { border-color: var(--eat); background: var(--eat); }
+.nada.is-on .opt__b::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 800; }
+
+.warn { border-radius: var(--r); padding: 14px 16px; margin: 14px 0; font-size: 14.5px; line-height: 1.45; }
+.warn--stop { background: var(--stop-wash); border: 1px solid #E2B5AE; }
+.warn--soft { background: var(--streak-wash); border: 1px solid #E8CE8A; }
+.warn--ok { background: var(--eat-wash); border: 1px solid #C3D3B7; }
+.warn h2 { margin-bottom: 5px; }
+
+/* pie de navegación */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: flex; gap: 10px; padding: 12px 18px calc(12px + var(--bot));
+  background: var(--card); border-top: 1px solid var(--line);
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px; border-radius: var(--r);
+  border: 1px solid var(--ink); background: var(--ink); color: #fff; font-weight: 700; font-size: 15.5px;
+  transition: transform var(--ease);
+}
+.btn:active { transform: scale(.985); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--wide { flex: 1; }
+.btn--s { min-height: 40px; font-size: 14px; padding: 0 14px; border-radius: var(--r-s); }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+
+.review { font-size: 14.5px; }
+.review__r { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); }
+.review__r:last-child { border-bottom: 0; }
+.review__k { color: var(--ink-mute); flex: none; width: 38%; }
+.review__v { font-weight: 600; }
+.mute { color: var(--ink-mute); }
+.tiny { font-size: 12.5px; }
+.foot { text-align: center; color: var(--ink-mute); font-size: 12.5px; padding: 26px 18px 8px; line-height: 1.5; }
+.asesor { display: none; }
+body.is-asesor .asesor {
+  display: block; background: #FFF8E1; border-left: 3px solid var(--streak);
+  padding: 10px 12px; margin: 10px 0; font-size: 13.5px; color: #6B5200; border-radius: 0 var(--r-s) var(--r-s) 0;
+}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="prog" id="prog"></div>
+  <div class="prog__t"><span class="prog__n" id="prog-n"></span><span class="prog__n" id="prog-save"></span></div>
+</header>
+
+<div class="wrap">
+
+<!-- 0 · portada -->
+<section class="step is-on" data-step="0">
+  <h1>Vamos a montar tu plan</h1>
+  <p class="step__intro">Diez pantallas cortas. Se tarda unos diez minutos y se puede dejar a medias: lo escrito se guarda solo en este móvil.</p>
+  <div class="card">
+    <p><strong>Cuanto más concreto seas, mejor sale el plan.</strong> Sobre todo en tres preguntas: por qué quieres hacerlo, qué comida no soportas y qué has probado antes que no te funcionó.</p>
+    <p class="mute tiny">No se piden apellidos, DNI, dirección, teléfono ni fotos. Nada de eso hace falta para escribir un plan.</p>
+  </div>
+  <div class="warn warn--soft" id="reanudar" hidden>
+    <h2>Tienes un cuestionario a medias</h2>
+    <p style="margin:6px 0 10px">Puedes seguir donde lo dejaste o empezar de cero.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn--s" id="btn-seguir">Seguir</button>
+      <button class="btn btn--s btn--ghost" id="btn-cero">Empezar de cero</button>
+    </div>
+  </div>
+</section>
+
+<!-- 1 · quién eres -->
+<section class="step" data-step="1">
+  <div class="step__kicker">1 de 10</div>
+  <h1>Quién eres</h1>
+  <div class="card">
+    <div class="f"><label class="lbl" for="alias">Cómo quieres que te llamemos <span class="req">*</span></label>
+      <div class="help">Nombre de pila o un apodo. Es lo único que aparecerá en tu plan.</div>
+      <input class="field" id="alias" autocomplete="given-name"><div class="err" data-err="alias"></div></div>
+    <div class="f"><label class="lbl" for="email">Correo <span class="req">*</span></label>
+      <div class="help">Solo para mandarte el enlace del plan y preguntarte dudas.</div>
+      <input class="field" id="email" type="email" inputmode="email" autocomplete="email"><div class="err" data-err="email"></div></div>
+    <div class="two">
+      <div class="f"><label class="lbl" for="edad">Edad <span class="req">*</span></label>
+        <input class="field" id="edad" inputmode="numeric"><div class="err" data-err="edad"></div></div>
+      <div class="f"><label class="lbl" for="sexo">Sexo <span class="req">*</span></label>
+        <select class="field" id="sexo">
+          <option value="">Elige</option><option value="mujer">Mujer</option>
+          <option value="hombre">Hombre</option><option value="otro">Otro</option>
+        </select><div class="err" data-err="sexo"></div></div>
+    </div>
+    <div class="help" style="margin-top:-6px">Se pregunta por una razón concreta: las cantidades mínimas de comida y algunos rangos de referencia son distintos. No se usa para nada más.</div>
+  </div>
+  <div class="warn warn--stop" id="menor" hidden>
+    <h2>Este cuestionario es solo para mayores de edad</h2>
+    <p style="margin:6px 0 0">Un plan de entrenamiento y alimentación para un menor lo tiene que pautar un profesional que pueda verle y seguirle. Aquí no se va a hacer, y no se guarda nada de lo escrito.</p>
+  </div>
+  <div class="card">
+    <button class="opt opt--sq" data-check="consent"><span class="opt__b"></span>
+      <span><span class="opt__t">Doy permiso para tratar estos datos <span class="req">*</span></span>
+      <span class="opt__d">Se usan solo para preparar tu plan. Puedes pedir que se borren cuando quieras.</span></span></button>
+    <div class="err" data-err="consent"></div>
+  </div>
+</section>
+
+<!-- 2 · qué quieres -->
+<section class="step" data-step="2">
+  <div class="step__kicker">2 de 10</div>
+  <h1>Qué quieres conseguir</h1>
+  <div class="card">
+    <div class="f"><label class="lbl">Objetivo principal <span class="req">*</span></label>
+      <div class="opts" data-radio="objetivo"></div><div class="err" data-err="objetivo"></div></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl" for="porque">¿Por qué quieres hacerlo? <span class="req">*</span></label>
+      <div class="help">La pregunta más importante del cuestionario. «Quiero subir al pueblo andando sin ahogarme» da un plan muy distinto de «quiero perder cinco kilos».</div>
+      <div class="asesor">Nota interna: si contesta con un número, tira del hilo. Detrás siempre hay algo concreto.</div>
+      <textarea class="field" id="porque"></textarea><div class="err" data-err="porque"></div></div>
+    <div class="f"><label class="lbl" for="plazo">¿Con cuánto tiempo cuentas?</label>
+      <select class="field" id="plazo"><option value="">Sin plazo concreto</option>
+        <option value="4">Un mes</option><option value="8">Dos meses</option>
+        <option value="12">Tres meses</option><option value="24">Medio año o más</option></select></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">¿Qué quieres que te preparemos? <span class="req">*</span></label>
+      <div class="opts" data-radio="modo"></div><div class="err" data-err="modo"></div></div>
+  </div>
+</section>
+
+<!-- 3 · cómo estás -->
+<section class="step" data-step="3">
+  <div class="step__kicker">3 de 10</div>
+  <h1>Cómo estás ahora</h1>
+  <p class="step__intro">Sin fotos: no se piden ni se van a pedir. Con dos medidas y el peso sobra para seguir el progreso.</p>
+  <div class="card">
+    <div class="two">
+      <div class="f"><label class="lbl" for="altura">Altura (cm) <span class="req">*</span></label>
+        <input class="field" id="altura" inputmode="decimal"><div class="err" data-err="altura"></div></div>
+      <div class="f"><label class="lbl" for="peso">Peso (kg) <span class="req">*</span></label>
+        <input class="field" id="peso" inputmode="decimal"><div class="err" data-err="peso"></div></div>
+    </div>
+    <div class="two">
+      <div class="f"><label class="lbl" for="cintura">Cintura (cm)</label>
+        <div class="help">A la altura del ombligo, sin apretar.</div>
+        <input class="field" id="cintura" inputmode="decimal"></div>
+      <div class="f"><label class="lbl" for="cadera">Cadera (cm)</label>
+        <div class="help">Por la parte más ancha.</div>
+        <input class="field" id="cadera" inputmode="decimal"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">¿Cuánto has entrenado antes? <span class="req">*</span></label>
+      <div class="opts" data-radio="experiencia"></div><div class="err" data-err="experiencia"></div></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">¿Cómo es tu día? <span class="req">*</span></label>
+      <div class="opts" data-radio="trabajo"></div><div class="err" data-err="trabajo"></div></div>
+    <div class="f"><label class="lbl" for="pasos">Pasos que sueles hacer al día</label>
+      <div class="help">Si no lo sabes, déjalo en blanco.</div>
+      <input class="field" id="pasos" inputmode="numeric"></div>
+  </div>
+</section>
+
+<!-- 4 · salud -->
+<section class="step" data-step="4">
+  <div class="step__kicker">4 de 10</div>
+  <h1>Salud</h1>
+  <p class="step__intro">Esto condiciona el plan entero. Un hombro que molestó hace años sigue mandando sobre qué ejercicios entran y cuáles no.</p>
+  <div class="card">
+    <h2>Lesiones, de ahora o de antes</h2>
+    <div id="lesiones"></div>
+    <button class="btn btn--ghost btn--s" id="add-lesion" style="margin-top:6px">Añadir una lesión</button>
+  </div>
+  <div class="card">
+    <h2>Enfermedades diagnosticadas</h2>
+    <div class="help">Marca lo que tengas. Si aparece algo de esta lista, hará falta el visto bueno de tu médico antes de empezar.</div>
+    <div class="tags" data-multi="patologias" style="margin-top:10px"></div>
+    <div class="f" style="margin-top:14px"><label class="lbl" for="medicacion">Medicación habitual</label>
+      <input class="field" id="medicacion" placeholder="Ninguna, o el nombre de lo que tomes"></div>
+    <button class="opt opt--sq" data-check="embarazo" style="margin-top:4px"><span class="opt__b"></span>
+      <span class="opt__t">Estoy embarazada o dando el pecho</span></button>
+  </div>
+  <div class="warn warn--stop" id="aviso-medico" hidden>
+    <h2>Hace falta pasar antes por el médico</h2>
+    <p style="margin:6px 0 10px">Con lo que has marcado, un plan hecho a distancia no es seguro sin que un profesional lo revise antes. No es una fórmula: es que hay ajustes que dependen de datos que aquí no tenemos.</p>
+    <div class="opts">
+      <button class="opt" data-radio-in="visto_bueno" data-v="si"><span class="opt__b"></span><span class="opt__t">Ya lo he consultado y me han dado el visto bueno</span></button>
+      <button class="opt" data-radio-in="visto_bueno" data-v="no"><span class="opt__b"></span><span class="opt__t">Todavía no lo he consultado</span></button>
+    </div>
+  </div>
+  <div class="warn warn--stop" id="aviso-embarazo" hidden>
+    <h2>Mejor con tu matrona</h2>
+    <p style="margin:6px 0 0">Durante el embarazo y la lactancia, el ejercicio y la alimentación se pautan con la matrona o con un dietista-nutricionista con formación específica. Aquí no se puede hacer bien.</p>
+  </div>
+  <button class="nada" data-nada="salud"><span class="opt__b"></span>
+    <span><span class="opt__t">No tengo nada de esto</span>
+    <span class="opt__d">Ni lesiones, ni enfermedades, ni medicación.</span></span></button>
+  <div class="err" data-err="salud"></div>
+</section>
+
+<!-- 5 · deporte -->
+<section class="step" data-step="5">
+  <div class="step__kicker">5 de 10</div>
+  <h1>Qué te gusta mover</h1>
+  <div class="card">
+    <div class="f"><label class="lbl">Lo que disfrutas <span class="req">*</span></label>
+      <div class="help">Un plan con algo que te gusta se sostiene. Uno con algo que odias, no.</div>
+      <div class="tags" data-multi="gusta"></div><div class="err" data-err="gusta"></div></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">Lo que no soportas <span class="req">*</span></label>
+      <div class="help">Esto no aparecerá en tu plan. Ni una vez.</div>
+      <div class="tags" data-multi="detesta_dep"></div>
+      <button class="nada" data-nada="detesta_dep"><span class="opt__b"></span>
+        <span class="opt__t">Me da igual, hago de todo</span></button>
+      <div class="err" data-err="detesta_dep"></div></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">¿Dónde vas a entrenar? <span class="req">*</span></label>
+      <div class="opts" data-radio="donde"></div><div class="err" data-err="donde"></div></div>
+  </div>
+</section>
+
+<!-- 6 · tiempo y material -->
+<section class="step" data-step="6">
+  <div class="step__kicker">6 de 10</div>
+  <h1>Tiempo y material</h1>
+  <div class="warn warn--soft">Conviene decir el escenario realista, no el ideal. El plan se construye sobre lo que se cumple, y una semana que no cabe en tu vida se abandona entera.</div>
+  <div class="card">
+    <div class="two">
+      <div class="f"><label class="lbl" for="dias">Días por semana <span class="req">*</span></label>
+        <select class="field" id="dias"><option value="">Elige</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        </select><div class="err" data-err="dias"></div></div>
+      <div class="f"><label class="lbl" for="minutos">Minutos por sesión <span class="req">*</span></label>
+        <select class="field" id="minutos"><option value="">Elige</option>
+          <option value="20">20</option><option value="30">30</option><option value="45">45</option>
+          <option value="60">60</option><option value="75">75</option><option value="90">90</option>
+        </select><div class="err" data-err="minutos"></div></div>
+    </div>
+    <div class="f"><label class="lbl">Días que mejor te vienen</label>
+      <div class="tags" data-multi="dias_pref"></div></div>
+    <div class="f"><label class="lbl">Momento del día</label>
+      <div class="tags" data-multi="franja" data-single="1"></div></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">Qué tienes a mano <span class="req">*</span></label>
+      <div class="tags" data-multi="material"></div><div class="err" data-err="material"></div></div>
+  </div>
+</section>
+
+<!-- 7 · comida no negociable -->
+<section class="step" data-step="7">
+  <div class="step__kicker">7 de 10</div>
+  <h1>Comida: lo que no se toca</h1>
+  <div class="card">
+    <div class="f"><label class="lbl" for="alergias">Alergias</label>
+      <div class="help">Escríbelas separadas por comas. Se cruzan con todas las recetas del plan.</div>
+      <input class="field" id="alergias" placeholder="frutos secos, marisco…"></div>
+    <div class="f"><label class="lbl" for="intolerancias">Intolerancias</label>
+      <input class="field" id="intolerancias" placeholder="lactosa, gluten…"></div>
+    <div class="f"><label class="lbl">Cómo comes <span class="req">*</span></label>
+      <div class="opts" data-radio="estilo"></div><div class="err" data-err="estilo"></div></div>
+    <div class="f"><label class="lbl" for="otros_vetos">Algo que no comes por motivo religioso u otro</label>
+      <input class="field" id="otros_vetos"></div>
+    <button class="nada" data-nada="comida"><span class="opt__b"></span>
+      <span><span class="opt__t">No tengo alergias ni intolerancias</span></span></button>
+    <div class="err" data-err="comida"></div>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl" for="detesta">Qué comida detestas <span class="req">*</span></label>
+      <div class="help">Va en serio: lo que pongas aquí no aparecerá en el plan. La gente contesta «nada» y luego resulta que odia el pescado.</div>
+      <div class="asesor">Nota interna: si dice «como de todo», preguntar por brócoli, hígado, pescado azul, coliflor, setas y cilantro. Casi siempre sale algo.</div>
+      <textarea class="field" id="detesta" placeholder="brócoli, hígado, pescado azul…"></textarea>
+      <button class="nada" data-nada="detesta"><span class="opt__b"></span>
+        <span class="opt__t">De verdad que como de todo</span></button>
+      <div class="err" data-err="detesta"></div></div>
+  </div>
+</section>
+
+<!-- 8 · gustos -->
+<section class="step" data-step="8">
+  <div class="step__kicker">8 de 10</div>
+  <h1>Comida: lo que te gusta</h1>
+  <div class="card">
+    <div class="f"><label class="lbl" for="favoritos">Platos y alimentos que te encantan</label>
+      <textarea class="field" id="favoritos" placeholder="lentejas, huevos, arroz, pollo…"></textarea></div>
+    <div class="two">
+      <div class="f"><label class="lbl" for="comidas_dia">Comidas al día <span class="req">*</span></label>
+        <select class="field" id="comidas_dia"><option value="">Elige</option>
+          <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+        </select><div class="err" data-err="comidas_dia"></div></div>
+      <div class="f"><label class="lbl" for="fuera">Veces que comes fuera <span class="req">*</span></label>
+        <select class="field" id="fuera"><option value="">Elige</option>
+          <option value="0">Ninguna</option><option value="1">1 a la semana</option>
+          <option value="2">2 o 3</option><option value="5">Casi a diario</option>
+        </select><div class="err" data-err="fuera"></div></div>
+    </div>
+    <div class="f"><label class="lbl" for="horarios">A qué horas comes</label>
+      <input class="field" id="horarios" placeholder="desayuno 7:30, comida 14:30, cena 21:30"></div>
+    <div class="f"><label class="lbl">Alcohol</label>
+      <div class="tags" data-multi="alcohol" data-single="1"></div></div>
+    <button class="opt opt--sq" data-check="tupper"><span class="opt__b"></span>
+      <span class="opt__t">Me llevo tupper al trabajo</span></button>
+  </div>
+</section>
+
+<!-- 9 · cocina -->
+<section class="step" data-step="9">
+  <div class="step__kicker">9 de 10</div>
+  <h1>Cocina</h1>
+  <div class="card">
+    <div class="f"><label class="lbl" for="quien_cocina">¿Quién cocina en tu casa? <span class="req">*</span></label>
+      <div class="help">Si cocina otra persona, el plan tiene que encajar con lo que se come en esa casa.</div>
+      <input class="field" id="quien_cocina" placeholder="yo, mi pareja, mi madre, comemos de comedor…">
+      <div class="err" data-err="quien_cocina"></div></div>
+    <div class="f"><label class="lbl">Nivel en la cocina <span class="req">*</span></label>
+      <div class="opts" data-radio="nivel_cocina"></div><div class="err" data-err="nivel_cocina"></div></div>
+    <div class="f"><label class="lbl" for="min_cocina">Minutos que puedes cocinar entre semana <span class="req">*</span></label>
+      <select class="field" id="min_cocina"><option value="">Elige</option>
+        <option value="10">10, y a duras penas</option><option value="20">20</option>
+        <option value="30">30</option><option value="45">45 o más</option>
+      </select><div class="err" data-err="min_cocina"></div></div>
+    <button class="opt opt--sq" data-check="batch"><span class="opt__b"></span>
+      <span><span class="opt__t">Haría cocina de una vez para varios días</span>
+      <span class="opt__d">Un rato el domingo y el resto de la semana resuelto.</span></span></button>
+  </div>
+  <div class="card">
+    <div class="f"><label class="lbl">Qué tienes en la cocina</label>
+      <div class="tags" data-multi="electro"></div></div>
+    <div class="f"><label class="lbl">Presupuesto de la compra <span class="req">*</span></label>
+      <div class="opts" data-radio="presupuesto"></div><div class="err" data-err="presupuesto"></div></div>
+  </div>
+</section>
+
+<!-- 10 · contexto -->
+<section class="step" data-step="10">
+  <div class="step__kicker">10 de 10</div>
+  <h1>Lo último</h1>
+  <div class="card">
+    <div class="f"><label class="lbl" for="intentos">¿Has intentado esto antes? ¿Por qué lo dejaste? <span class="req">*</span></label>
+      <div class="help">Predice el abandono mejor que ninguna otra pregunta. Quien lo dejó por hambre necesita un plan con más volumen de comida; quien lo dejó por aburrimiento, uno con más variedad.</div>
+      <textarea class="field" id="intentos"></textarea><div class="err" data-err="intentos"></div></div>
+    <div class="two">
+      <div class="f"><label class="lbl" for="sueno">Horas que duermes</label>
+        <input class="field" id="sueno" inputmode="decimal" placeholder="6,5"></div>
+      <div class="f"><label class="lbl" for="estres">Estrés del 1 al 5</label>
+        <select class="field" id="estres"><option value="">Elige</option>
+          <option value="1">1 · tranquilo</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5 · desbordado</option></select></div>
+    </div>
+    <div class="f"><label class="lbl" for="notas">Cualquier cosa que quieras contar</label>
+      <textarea class="field" id="notas"></textarea></div>
+  </div>
+</section>
+
+<!-- 11 · repaso y envío -->
+<section class="step" data-step="11">
+  <div class="step__kicker">Ya está</div>
+  <h1>Repasa y envía</h1>
+  <div class="card"><div class="review" id="review"></div></div>
+
+  <div class="card">
+    <h2>Una frase para cifrar el envío</h2>
+    <p class="help" style="margin-top:6px">Tus respuestas se cifran en este mismo móvil antes de enviarse. Ni el servicio de correo ni nadie que intercepte el mensaje puede leerlas: hace falta esta frase, y la frase no viaja con el archivo. Quien prepare tu plan sí la tendrá, porque necesita leer tus datos para diseñarlo. Nadie más.</p>
+    <div class="warn warn--soft" style="margin-top:10px"><strong>Apúntala y pásasela por otro sitio</strong> (un mensaje, en persona). Si se pierde, el archivo no se puede abrir y hay que rellenar el cuestionario otra vez.</div>
+    <div class="f"><label class="lbl" for="frase">Tu frase</label>
+      <input class="field" id="frase" autocomplete="off" placeholder="tres palabras que recuerdes"><div class="err" data-err="frase"></div></div>
+    <div class="f"><label class="lbl" for="frase2">Otra vez, para asegurar</label>
+      <input class="field" id="frase2" autocomplete="off"><div class="err" data-err="frase2"></div></div>
+    <button class="opt opt--sq" data-check="sin_cifrar"><span class="opt__b"></span>
+      <span><span class="opt__t">Prefiero enviarlo sin cifrar</span>
+      <span class="opt__d">Más simple, y no hay frase que recordar.</span></span></button>
+  </div>
+
+  <div class="card">
+    <button class="btn btn--wide" id="btn-enviar" style="width:100%">Enviar mis respuestas</button>
+    <button class="btn btn--ghost btn--wide btn--s" id="btn-descargar" style="width:100%;margin-top:10px">Descargar una copia</button>
+    <p class="tiny mute" style="margin-top:10px">La copia es la red de seguridad: si el envío falla, se puede mandar ese archivo a mano.</p>
+  </div>
+
+  <div class="warn warn--ok" id="enviado" hidden>
+    <h2>Enviado</h2>
+    <p style="margin:6px 0 0" id="enviado-txt"></p>
+  </div>
+</section>
+
+<p class="foot">No se piden apellidos, documentos de identidad, dirección, teléfono ni fotos.<br>
+Lo escrito se guarda en este navegador hasta que lo envíes.</p>
+</div>
+
+<nav class="nav" id="nav">
+  <button class="btn btn--ghost" id="btn-atras">Atrás</button>
+  <button class="btn btn--wide" id="btn-adelante">Empezar</button>
+</nav>
+
+<script>
+/* ============================================================
+   Cuestionario de perfil · v1.0
+   Sin backend: se guarda en este navegador y se envía cifrado.
+   ============================================================ */
+(function () {
+'use strict';
+
+var CONFIG = {
+  /* Endpoint de Formspree. Se cambia aquí y en ningún otro sitio. */
+  endpoint: 'https://formspree.io/f/CAMBIA-ESTE-CODIGO',
+  privacidad: 'privacidad.html',
+  plazo: 'entre tres y cinco días'
+};
+
+var PASOS = 11;
+var KEY = 'perfil-borrador-v1';
+
+/* ---------- listas ---------- */
+var LISTAS = {
+  objetivo: [
+    ['fuerza', 'Ganar fuerza', 'Levantar más y notarlo en el día a día'],
+    ['grasa', 'Perder grasa', 'Sin pasar hambre ni dejar de comer con la gente'],
+    ['masa', 'Ganar masa muscular', ''],
+    ['movimiento', 'Moverme más', 'Salir del sedentarismo, sin más'],
+    ['salud', 'Mejorar la salud', 'Tensión, azúcar, espalda, energía'],
+    ['prueba', 'Preparar una prueba', 'Una carrera, una ruta, un partido'],
+    ['sentirme', 'Sentirme mejor', 'Dormir bien y llegar entero al final del día']
+  ],
+  modo: [
+    ['ambos', 'Comida y ejercicio', 'Lo habitual: los dos van juntos'],
+    ['ejercicio', 'Solo ejercicio', 'La comida ya la llevas tú'],
+    ['comidas', 'Solo comida', 'El deporte ya lo tienes resuelto']
+  ],
+  experiencia: [
+    ['nunca', 'Nunca he entrenado en serio', ''],
+    ['principiante', 'Menos de un año', ''],
+    ['intermedio', 'Entre uno y tres años', ''],
+    ['avanzado', 'Más de tres años', ''],
+    ['retomando', 'Entrenaba y lo dejé', 'Volver no es empezar, pero tampoco es seguir']
+  ],
+  trabajo: [
+    ['sedentario', 'Sentado casi todo el día', ''],
+    ['de_pie', 'De pie o andando', ''],
+    ['fisico', 'Trabajo físico', 'Cargar peso, obra, almacén']
+  ],
+  donde: [
+    ['gimnasio', 'En un gimnasio', ''],
+    ['casa', 'En casa', ''],
+    ['aire', 'Al aire libre', ''],
+    ['mixto', 'Un poco de todo', '']
+  ],
+  estilo: [
+    ['omnivora', 'De todo', ''],
+    ['vegetariana', 'Vegetariana', ''],
+    ['vegana', 'Vegana', ''],
+    ['pescetariana', 'Pescado sí, carne no', ''],
+    ['otra', 'Otra cosa', '']
+  ],
+  nivel_cocina: [
+    ['nula', 'No cocino', 'Como fuera o me lo preparan'],
+    ['basica', 'Lo básico', 'Plancha, horno, cosas sencillas'],
+    ['media', 'Me defiendo', ''],
+    ['alta', 'Cocino bien y me gusta', '']
+  ],
+  presupuesto: [
+    ['ajustado', 'Ajustado', 'Legumbre, huevo, temporada y congelado'],
+    ['normal', 'Normal', ''],
+    ['sin_limite', 'Sin problema', '']
+  ]
+};
+var TAGS = {
+  patologias: ['Diabetes', 'Hipertensión', 'Cardiopatía', 'Problema renal', 'Problema de hígado',
+    'Cáncer en tratamiento', 'Cirugía en los últimos 6 meses', 'Hernia discal', 'Epilepsia',
+    'Trastorno de la conducta alimentaria', 'Tratamiento psiquiátrico', 'Tiroides'],
+  gusta: ['Pesas', 'Correr', 'Bici', 'Natación', 'Caminar', 'Clases dirigidas', 'Deportes de equipo',
+    'Yoga o pilates', 'Calistenia', 'Escalada', 'Baile', 'Senderismo'],
+  detesta_dep: ['Correr', 'Pesas', 'Clases dirigidas', 'Nadar', 'Bici', 'Saltar', 'Madrugar para entrenar',
+    'Entrenar en grupo', 'Entrenar solo'],
+  dias_pref: ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
+  franja: ['Mañana', 'Mediodía', 'Tarde', 'Noche', 'Variable'],
+  material: ['Gimnasio completo', 'Mancuernas', 'Barra y discos', 'Kettlebell', 'Gomas', 'Banco',
+    'Barra de dominadas', 'Esterilla', 'Bici', 'Cinta', 'Nada, solo mi cuerpo'],
+  alcohol: ['Nada', 'Alguna vez', 'Fines de semana', 'A diario'],
+  electro: ['Olla rápida', 'Freidora de aire', 'Robot de cocina', 'Congelador con sitio', 'Microondas', 'Horno']
+};
+var MAT_MAP = {
+  'Gimnasio completo': 'gimnasio', 'Mancuernas': 'mancuernas', 'Barra y discos': 'barra',
+  'Kettlebell': 'kettlebell', 'Gomas': 'gomas', 'Banco': 'banco',
+  'Barra de dominadas': 'dominadas', 'Esterilla': 'esterilla', 'Bici': 'bici',
+  'Cinta': 'cinta', 'Nada, solo mi cuerpo': 'nada'
+};
+var ALCOHOL_MAP = { 'Nada': 'nada', 'Alguna vez': 'ocasional', 'Fines de semana': 'semanal', 'A diario': 'diario' };
+var FRANJA_MAP = { 'Mañana': 'mañana', 'Mediodía': 'mediodia', 'Tarde': 'tarde', 'Noche': 'noche', 'Variable': 'variable' };
+
+/* ---------- estado ---------- */
+var S = { radios: {}, multi: {}, checks: {}, campos: {}, lesiones: [], nada: {}, paso: 0 };
+var paso = 0;
+
+function $(id) { return document.getElementById(id); }
+function $$(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function v(id) { var e = $(id); return e ? String(e.value || '').trim() : ''; }
+function num(x) { var n = parseFloat(String(x).replace(',', '.')); return isNaN(n) ? null : n; }
+function lista(s) {
+  return String(s || '').split(/[,;\n]/).map(function (x) { return x.trim(); }).filter(Boolean);
+}
+
+/* ---------- pintar opciones ---------- */
+$$('[data-radio]').forEach(function (box) {
+  var k = box.dataset.radio;
+  box.innerHTML = (LISTAS[k] || []).map(function (o) {
+    return '<button class="opt" data-v="' + o[0] + '"><span class="opt__b"></span><span>' +
+      '<span class="opt__t">' + esc(o[1]) + '</span>' +
+      (o[2] ? '<span class="opt__d">' + esc(o[2]) + '</span>' : '') + '</span></button>';
+  }).join('');
+  box.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.opt'); if (!b) return;
+    S.radios[k] = b.dataset.v;
+    pintarRadio(box, k);
+    guardar();
+    if (k === 'modo') aplicarModo();
+  });
+});
+function pintarRadio(box, k) {
+  $$('.opt', box).forEach(function (b) { b.classList.toggle('is-on', b.dataset.v === S.radios[k]); });
+}
+$$('[data-multi]').forEach(function (box) {
+  var k = box.dataset.multi, single = box.dataset.single === '1';
+  box.innerHTML = (TAGS[k] || []).map(function (t) {
+    return '<button class="tag" data-v="' + esc(t) + '">' + esc(t) + '</button>';
+  }).join('');
+  box.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.tag'); if (!b) return;
+    var val = b.dataset.v;
+    S.multi[k] = S.multi[k] || [];
+    if (single) { S.multi[k] = S.multi[k][0] === val ? [] : [val]; }
+    else {
+      var i = S.multi[k].indexOf(val);
+      if (i > -1) S.multi[k].splice(i, 1); else S.multi[k].push(val);
+    }
+    pintarMulti(box, k);
+    if (k === 'patologias') avisos();
+    if (S.nada[nadaDe(k)]) { S.nada[nadaDe(k)] = false; pintarNadas(); }
+    guardar();
+  });
+});
+function nadaDe(k) { return k === 'patologias' ? 'salud' : k; }
+function pintarMulti(box, k) {
+  var sel = S.multi[k] || [];
+  $$('.tag', box).forEach(function (b) { b.classList.toggle('is-on', sel.indexOf(b.dataset.v) > -1); });
+}
+$$('[data-check]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var k = b.dataset.check;
+    S.checks[k] = !S.checks[k];
+    b.classList.toggle('is-on', S.checks[k]);
+    if (k === 'embarazo') avisos();
+    guardar();
+  });
+});
+$$('[data-nada]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var k = b.dataset.nada;
+    S.nada[k] = !S.nada[k];
+    if (S.nada[k]) {
+      if (k === 'salud') { S.multi.patologias = []; S.lesiones = []; S.checks.embarazo = false; $('medicacion').value = ''; }
+      if (k === 'comida') { $('alergias').value = ''; $('intolerancias').value = ''; }
+      if (k === 'detesta') $('detesta').value = '';
+      if (k === 'detesta_dep') S.multi.detesta_dep = [];
+      pintarTodo();
+    }
+    pintarNadas(); avisos(); guardar();
+  });
+});
+function pintarNadas() {
+  $$('[data-nada]').forEach(function (b) { b.classList.toggle('is-on', !!S.nada[b.dataset.nada]); });
+}
+$$('[data-radio-in]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    S.radios[b.dataset.radioIn] = b.dataset.v;
+    $$('[data-radio-in="' + b.dataset.radioIn + '"]').forEach(function (x) {
+      x.classList.toggle('is-on', x === b);
+    });
+    guardar();
+  });
+});
+
+/* ---------- lesiones ---------- */
+function pintarLesiones() {
+  $('lesiones').innerHTML = S.lesiones.map(function (l, i) {
+    return '<div class="rep" data-i="' + i + '">' +
+      '<div class="rep__h"><span class="rep__n">Lesión ' + (i + 1) + '</span>' +
+      '<button class="rep__x" data-del="' + i + '">Quitar</button></div>' +
+      '<div class="f"><label class="lbl">¿Dónde?</label>' +
+      '<input class="field" data-l="zone" value="' + esc(l.zone) + '" placeholder="hombro derecho, lumbar, rodilla…"></div>' +
+      '<div class="f"><label class="lbl">¿Cómo está?</label><select class="field" data-l="status">' +
+        ['activa|Me molesta ahora', 'antigua|Ya pasó, pero está ahí', 'operada|Operada'].map(function (o) {
+          var p = o.split('|');
+          return '<option value="' + p[0] + '"' + (l.status === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+        }).join('') + '</select></div>' +
+      '<div class="f"><label class="lbl">¿Qué te dijeron o qué notas?</label>' +
+      '<input class="field" data-l="notes" value="' + esc(l.notes) + '" placeholder="molesta al levantar el brazo…"></div>' +
+      '</div>';
+  }).join('');
+}
+$('add-lesion').addEventListener('click', function () {
+  S.lesiones.push({ zone: '', status: 'activa', notes: '' });
+  S.nada.salud = false; pintarNadas(); pintarLesiones(); guardar();
+});
+$('lesiones').addEventListener('click', function (ev) {
+  var d = ev.target.closest('[data-del]'); if (!d) return;
+  S.lesiones.splice(parseInt(d.dataset.del, 10), 1);
+  pintarLesiones(); guardar();
+});
+$('lesiones').addEventListener('input', function (ev) {
+  var f = ev.target.closest('[data-l]'); if (!f) return;
+  var i = parseInt(f.closest('.rep').dataset.i, 10);
+  S.lesiones[i][f.dataset.l] = f.value;
+  guardar();
+});
+$('lesiones').addEventListener('change', function (ev) {
+  var f = ev.target.closest('[data-l]'); if (!f) return;
+  var i = parseInt(f.closest('.rep').dataset.i, 10);
+  S.lesiones[i][f.dataset.l] = f.value;
+  guardar();
+});
+
+/* ---------- avisos de salud ---------- */
+var SENSIBLES = ['Diabetes', 'Hipertensión', 'Cardiopatía', 'Problema renal', 'Problema de hígado',
+  'Cáncer en tratamiento', 'Cirugía en los últimos 6 meses', 'Hernia discal', 'Epilepsia',
+  'Trastorno de la conducta alimentaria', 'Tratamiento psiquiátrico'];
+function haySensible() {
+  return (S.multi.patologias || []).some(function (p) { return SENSIBLES.indexOf(p) > -1; });
+}
+function avisos() {
+  var edad = num(v('edad'));
+  var menor = edad != null && edad < 18;
+  $('menor').hidden = !menor;
+  $('aviso-medico').hidden = !haySensible();
+  $('aviso-embarazo').hidden = !S.checks.embarazo;
+  if (menor) { $('btn-adelante').disabled = true; }
+}
+
+/* ---------- guardado y navegación ---------- */
+function recogerCampos() {
+  $$('.field').forEach(function (f) { if (f.id) S.campos[f.id] = f.value; });
+}
+function guardar() {
+  recogerCampos();
+  S.paso = paso;
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  var t = $('prog-save');
+  t.textContent = 'Guardado';
+  clearTimeout(guardar._t);
+  guardar._t = setTimeout(function () { t.textContent = ''; }, 1600);
+}
+function cargar() {
+  var raw;
+  try { raw = localStorage.getItem(KEY); } catch (e) { return false; }
+  if (!raw) return false;
+  try {
+    var d = JSON.parse(raw);
+    S = Object.assign(S, d);
+    S.radios = d.radios || {}; S.multi = d.multi || {}; S.checks = d.checks || {};
+    S.campos = d.campos || {}; S.lesiones = d.lesiones || []; S.nada = d.nada || {};
+    return true;
+  } catch (e) { return false; }
+}
+function pintarTodo() {
+  Object.keys(S.campos).forEach(function (id) { if ($(id)) $(id).value = S.campos[id]; });
+  $$('[data-radio]').forEach(function (b) { pintarRadio(b, b.dataset.radio); });
+  $$('[data-multi]').forEach(function (b) { pintarMulti(b, b.dataset.multi); });
+  $$('[data-check]').forEach(function (b) { b.classList.toggle('is-on', !!S.checks[b.dataset.check]); });
+  $$('[data-radio-in]').forEach(function (b) {
+    b.classList.toggle('is-on', S.radios[b.dataset.radioIn] === b.dataset.v);
+  });
+  pintarNadas(); pintarLesiones(); avisos();
+}
+function aplicarModo() {
+  var m = S.radios.modo || 'ambos';
+  /* Preguntar por sentadillas a quien solo quiere comidas es perder su tiempo. */
+  [5, 6].forEach(function (n) { $$('.step[data-step="' + n + '"]')[0].dataset.skip = m === 'comidas' ? '1' : ''; });
+  [7, 8, 9].forEach(function (n) { $$('.step[data-step="' + n + '"]')[0].dataset.skip = m === 'ejercicio' ? '1' : ''; });
+}
+function saltable(n) {
+  var s = document.querySelector('.step[data-step="' + n + '"]');
+  return s && s.dataset.skip === '1';
+}
+function ir(n) {
+  while (n > 0 && n < PASOS && saltable(n)) n += (n > paso ? 1 : -1);
+  paso = Math.max(0, Math.min(PASOS, n));
+  $$('.step').forEach(function (s) { s.classList.toggle('is-on', +s.dataset.step === paso); });
+  $('btn-atras').style.visibility = paso === 0 ? 'hidden' : 'visible';
+  $('btn-adelante').textContent = paso === 0 ? 'Empezar' : (paso === PASOS ? 'Repasar' : 'Continuar');
+  $('btn-adelante').style.display = paso === PASOS ? 'none' : '';
+  $('prog-n').textContent = paso === 0 ? '' : 'Paso ' + Math.min(paso, 10) + ' de 10';
+  pintarProg();
+  if (paso === PASOS) repaso();
+  window.scrollTo(0, 0);
+  guardar();
+}
+function pintarProg() {
+  $('prog').innerHTML = Array.apply(null, Array(10)).map(function (_, i) {
+    var n = i + 1;
+    return '<div class="prog__s' + (n < paso ? ' is-done' : '') + (n === paso ? ' is-now' : '') + '"></div>';
+  }).join('');
+}
+
+/* ---------- validación ---------- */
+function marcar(id, msg) {
+  var e = document.querySelector('[data-err="' + id + '"]');
+  if (e) { e.textContent = msg || ''; e.classList.toggle('is-on', !!msg); }
+  var f = $(id);
+  if (f && f.classList) f.classList.toggle('is-bad', !!msg);
+  return !msg;
+}
+function valida(n) {
+  var ok = true, F = function (id, cond, msg) { if (!marcar(id, cond ? '' : msg)) ok = false; };
+  if (n === 1) {
+    F('alias', v('alias').length >= 2, 'Con dos letras basta, pero algo hay que poner.');
+    F('email', /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(v('email')), 'Ese correo no parece válido.');
+    var e = num(v('edad'));
+    F('edad', e != null && e >= 18 && e < 100, e != null && e < 18
+      ? 'Este cuestionario es solo para mayores de edad.' : 'Pon tu edad en años.');
+    F('sexo', v('sexo'), 'Elige una opción.');
+    F('consent', !!S.checks.consent, 'Hace falta el permiso para poder tratar tus datos.');
+  }
+  if (n === 2) {
+    F('objetivo', S.radios.objetivo, 'Elige un objetivo.');
+    F('porque', v('porque').length >= 15, 'Cuéntalo un poco más: es lo que hace que el plan sea tuyo.');
+    F('modo', S.radios.modo, 'Elige qué quieres que te preparemos.');
+  }
+  if (n === 3) {
+    var a = num(v('altura')), p = num(v('peso'));
+    F('altura', a != null && a > 120 && a < 230, 'En centímetros, por ejemplo 165.');
+    F('peso', p != null && p > 35 && p < 300, 'En kilos, por ejemplo 71,4.');
+    F('experiencia', S.radios.experiencia, 'Elige una opción.');
+    F('trabajo', S.radios.trabajo, 'Elige una opción.');
+  }
+  if (n === 4) {
+    var algo = S.lesiones.length || (S.multi.patologias || []).length || v('medicacion') || S.checks.embarazo;
+    F('salud', algo || S.nada.salud, 'Si no tienes nada, márcalo abajo. El silencio no nos sirve.');
+    if (S.checks.embarazo) { marcar('salud', 'Con embarazo o lactancia, esto lo tiene que llevar tu matrona.'); ok = false; }
+    if (haySensible() && !S.radios.visto_bueno) { marcar('salud', 'Dinos si ya lo has consultado con tu médico.'); ok = false; }
+  }
+  if (n === 5) {
+    F('gusta', (S.multi.gusta || []).length, 'Marca al menos una cosa que disfrutes.');
+    F('detesta_dep', (S.multi.detesta_dep || []).length || S.nada.detesta_dep, 'Marca lo que no soportas, o di que te da igual.');
+    F('donde', S.radios.donde, 'Elige dónde vas a entrenar.');
+  }
+  if (n === 6) {
+    F('dias', v('dias'), 'Elige cuántos días.');
+    F('minutos', v('minutos'), 'Elige cuántos minutos.');
+    F('material', (S.multi.material || []).length, 'Marca lo que tengas, aunque sea solo tu cuerpo.');
+  }
+  if (n === 7) {
+    var c = v('alergias') || v('intolerancias');
+    F('comida', c || S.nada.comida, 'Si no tienes ninguna, márcalo. Así sabemos que la pregunta se ha leído.');
+    F('estilo', S.radios.estilo, 'Elige cómo comes.');
+    F('detesta', v('detesta') || S.nada.detesta, 'Escribe lo que detestas, o confirma que comes de todo.');
+  }
+  if (n === 8) {
+    F('comidas_dia', v('comidas_dia'), 'Elige cuántas comidas.');
+    F('fuera', v('fuera'), 'Elige una opción.');
+  }
+  if (n === 9) {
+    F('quien_cocina', v('quien_cocina'), 'Dinos quién cocina, aunque sea «nadie».');
+    F('nivel_cocina', S.radios.nivel_cocina, 'Elige tu nivel.');
+    F('min_cocina', v('min_cocina'), 'Elige cuántos minutos.');
+    F('presupuesto', S.radios.presupuesto, 'Elige una opción.');
+  }
+  if (n === 10) {
+    F('intentos', v('intentos').length >= 10, 'Aunque sea una línea. Si nunca lo has intentado, ponlo.');
+  }
+  if (!ok) {
+    var bad = document.querySelector('.step.is-on .err.is-on');
+    if (bad && bad.scrollIntoView) bad.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  return ok;
+}
+
+$('btn-adelante').addEventListener('click', function () {
+  recogerCampos();
+  if (paso > 0 && !valida(paso)) return;
+  ir(paso + 1);
+});
+$('btn-atras').addEventListener('click', function () { ir(paso - 1); });
+document.addEventListener('input', function (ev) {
+  if (ev.target.classList && ev.target.classList.contains('field')) {
+    if (ev.target.id === 'edad') avisos();
+    clearTimeout(guardar._d);
+    guardar._d = setTimeout(guardar, 500);
+  }
+});
+
+/* ---------- el archivo que sale de aquí ---------- */
+function perfil() {
+  recogerCampos();
+  var modo = S.radios.modo || 'ambos';
+  var p = {
+    perfil_version: '1.0',
+    enviado_el: new Date().toISOString(),
+    contacto: { alias: v('alias'), email: v('email'), consentimiento: !!S.checks.consent },
+    modo: modo,
+    persona: {
+      edad: num(v('edad')), sexo: v('sexo'),
+      altura_cm: num(v('altura')), peso_kg: num(v('peso')),
+      cintura_cm: num(v('cintura')), cadera_cm: num(v('cadera')),
+      experiencia: S.radios.experiencia || '', trabajo: S.radios.trabajo || '',
+      pasos_dia: num(v('pasos'))
+    },
+    objetivo: {
+      principal: S.radios.objetivo || '', por_que: v('porque'),
+      plazo_semanas: num(v('plazo')), peso_deseado_kg: null, otros: []
+    },
+    salud: {
+      respondido: true,
+      nada_que_resenar: !!S.nada.salud,
+      lesiones: S.lesiones.filter(function (l) { return l.zone; }),
+      patologias: S.multi.patologias || [],
+      medicacion: lista(v('medicacion')),
+      embarazo_lactancia: !!S.checks.embarazo,
+      visto_bueno_medico: haySensible() ? (S.radios.visto_bueno === 'si') : null
+    },
+    deporte: {
+      gusta: S.multi.gusta || [],
+      detesta: S.multi.detesta_dep || [],
+      donde: S.radios.donde || ''
+    },
+    disponibilidad: {
+      dias_semana: num(v('dias')), minutos_sesion: num(v('minutos')),
+      dias_preferidos: S.multi.dias_pref || [],
+      franja: FRANJA_MAP[(S.multi.franja || [])[0]] || '',
+      material: (S.multi.material || []).map(function (m) { return MAT_MAP[m] || m; })
+    },
+    comida_no_negociable: {
+      respondido: true,
+      nada_que_resenar: !!S.nada.comida,
+      alergias: lista(v('alergias')), intolerancias: lista(v('intolerancias')),
+      estilo: S.radios.estilo || '', otros_vetos: lista(v('otros_vetos')),
+      detesta: S.nada.detesta ? [] : lista(v('detesta'))
+    },
+    comida_gustos: {
+      favoritos: lista(v('favoritos')),
+      comidas_dia: num(v('comidas_dia')), horarios: v('horarios'),
+      come_fuera_semana: num(v('fuera')), tupper: !!S.checks.tupper,
+      alcohol: ALCOHOL_MAP[(S.multi.alcohol || [])[0]] || ''
+    },
+    cocina: {
+      quien_cocina: v('quien_cocina'), nivel: S.radios.nivel_cocina || '',
+      minutos_entre_semana: num(v('min_cocina')), batch_cooking: !!S.checks.batch,
+      electrodomesticos: S.multi.electro || [], presupuesto: S.radios.presupuesto || ''
+    },
+    contexto: {
+      sueno_horas: num(v('sueno')), estres_1_5: num(v('estres')),
+      intentos_previos: v('intentos'), notas_libres: v('notas')
+    }
+  };
+  /* Un plan solo de comida no arrastra la parte de deporte, y al revés. */
+  if (modo === 'comidas') { p.deporte = { gusta: [], detesta: [], donde: '' }; }
+  if (modo === 'ejercicio') {
+    p.comida_gustos.favoritos = [];
+    p.cocina.quien_cocina = p.cocina.quien_cocina || 'no procede';
+  }
+  return p;
+}
+
+function repaso() {
+  var p = perfil(), h = '';
+  function fila(k, val) {
+    if (!val || (Array.isArray(val) && !val.length)) return;
+    h += '<div class="review__r"><span class="review__k">' + esc(k) + '</span>' +
+      '<span class="review__v">' + esc(Array.isArray(val) ? val.join(', ') : val) + '</span></div>';
+  }
+  fila('Tú', p.contacto.alias + ' · ' + p.persona.edad + ' años');
+  fila('Correo', p.contacto.email);
+  fila('Quieres', (LISTAS.objetivo.filter(function (o) { return o[0] === p.objetivo.principal; })[0] || [])[1]);
+  fila('Por qué', p.objetivo.por_que);
+  fila('Te preparamos', (LISTAS.modo.filter(function (o) { return o[0] === p.modo; })[0] || [])[1]);
+  fila('Medidas', p.persona.altura_cm + ' cm · ' + p.persona.peso_kg + ' kg');
+  fila('Experiencia', (LISTAS.experiencia.filter(function (o) { return o[0] === p.persona.experiencia; })[0] || [])[1]);
+  fila('Salud', p.salud.nada_que_resenar ? 'Nada que reseñar'
+    : p.salud.lesiones.map(function (l) { return l.zone + ' (' + l.status + ')'; }).concat(p.salud.patologias).join(', '));
+  if (p.modo !== 'comidas') {
+    fila('Te gusta', p.deporte.gusta);
+    fila('No soportas', p.deporte.detesta.length ? p.deporte.detesta : 'nada en particular');
+    fila('Disponibilidad', p.disponibilidad.dias_semana + ' días · ' + p.disponibilidad.minutos_sesion + ' min');
+    fila('Material', p.disponibilidad.material);
+  }
+  if (p.modo !== 'ejercicio') {
+    fila('Alergias', p.comida_no_negociable.nada_que_resenar ? 'ninguna'
+      : p.comida_no_negociable.alergias.concat(p.comida_no_negociable.intolerancias));
+    fila('Detestas', p.comida_no_negociable.detesta.length ? p.comida_no_negociable.detesta : 'come de todo');
+    fila('Cocina', p.cocina.quien_cocina + ' · ' + p.cocina.minutos_entre_semana + ' min entre semana');
+  }
+  fila('Intentos previos', p.contexto.intentos_previos);
+  $('review').innerHTML = h;
+}
+
+/* ---------- cifrado ---------- */
+async function cifrar(objeto, frase) {
+  var enc = new TextEncoder();
+  var salt = crypto.getRandomValues(new Uint8Array(16));
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  var base = await crypto.subtle.importKey('raw', enc.encode(frase), 'PBKDF2', false, ['deriveKey']);
+  var key = await crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: salt, iterations: 210000, hash: 'SHA-256' },
+    base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+  var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(JSON.stringify(objeto)));
+  var b64 = function (b) { return btoa(String.fromCharCode.apply(null, new Uint8Array(b))); };
+  return { v: 1, alg: 'AES-GCM', kdf: 'PBKDF2-SHA256', iter: 210000, salt: b64(salt), iv: b64(iv), ct: b64(ct) };
+}
+function puedeCifrar() {
+  return !!(window.crypto && window.crypto.subtle && window.isSecureContext);
+}
+function validaFrase() {
+  if (S.checks.sin_cifrar || !puedeCifrar()) return true;
+  var ok = true;
+  if (v('frase').length < 8) { marcar('frase', 'Al menos ocho caracteres. Tres palabras seguidas valen.'); ok = false; }
+  else marcar('frase', '');
+  if (v('frase') !== v('frase2')) { marcar('frase2', 'Las dos frases no coinciden.'); ok = false; }
+  else marcar('frase2', '');
+  return ok;
+}
+function bajar(nombre, texto) {
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([texto], { type: 'application/json' }));
+  a.download = nombre;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+}
+function nombreArchivo(cifrado) {
+  var slug = (v('alias') || 'perfil').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return 'perfil-' + slug + (cifrado ? '.enc' : '') + '.json';
+}
+async function paquete() {
+  var p = perfil();
+  if (S.checks.sin_cifrar || !puedeCifrar()) return { texto: JSON.stringify(p, null, 2), cifrado: false };
+  var blob = await cifrar(p, v('frase'));
+  return { texto: JSON.stringify(blob, null, 2), cifrado: true };
+}
+
+$('btn-descargar').addEventListener('click', async function () {
+  if (!validaFrase()) return;
+  var q = await paquete();
+  bajar(nombreArchivo(q.cifrado), q.texto);
+});
+
+$('btn-enviar').addEventListener('click', async function () {
+  if (!validaFrase()) return;
+  var b = $('btn-enviar');
+  b.disabled = true; b.textContent = 'Enviando…';
+  var q;
+  try { q = await paquete(); }
+  catch (e) { b.disabled = false; b.textContent = 'Enviar mis respuestas'; marcar('frase', 'No se ha podido cifrar. Prueba a marcar el envío sin cifrar.'); return; }
+
+  var fd = new FormData();
+  /* Solo lo imprescindible en claro, para poder identificar el envío y responder. */
+  fd.append('alias', v('alias'));
+  fd.append('email', v('email'));
+  fd.append('modo', S.radios.modo || 'ambos');
+  fd.append('cifrado', q.cifrado ? 'sí' : 'no');
+  fd.append('perfil', q.texto);
+
+  var fin = function (ok) {
+    b.disabled = false;
+    b.textContent = ok ? 'Enviado' : 'Reintentar el envío';
+    $('enviado').hidden = false;
+    $('enviado-txt').textContent = ok
+      ? 'Recibido. Tendrás tu plan ' + CONFIG.plazo + '.' + (q.cifrado ? ' Acuérdate de pasar la frase por otro sitio: sin ella no se puede abrir.' : '')
+      : 'El envío no ha salido. Descarga la copia con el botón de abajo y mándala a mano: no has perdido nada.';
+    if (ok) { try { localStorage.removeItem(KEY); } catch (e) {} }
+  };
+  if (CONFIG.endpoint.indexOf('CAMBIA') > -1) {
+    bajar(nombreArchivo(q.cifrado), q.texto);
+    fin(false);
+    $('enviado-txt').textContent = 'Este formulario todavía no tiene configurado el envío. Se ha descargado el archivo: mándalo a mano.';
+    return;
+  }
+  fetch(CONFIG.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
+    .then(function (r) { fin(r.ok); })
+    .catch(function () { fin(false); });
+});
+
+/* ---------- arranque ---------- */
+if (location.search.indexOf('asesor') > -1) document.body.classList.add('is-asesor');
+
+var hayBorrador = cargar();
+if (location.search.indexOf('nuevo') > -1) {
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  S = { radios: {}, multi: {}, checks: {}, campos: {}, lesiones: [], nada: {}, paso: 0 };
+  hayBorrador = false;
+}
+pintarTodo(); aplicarModo();
+if (hayBorrador && S.paso > 0) {
+  $('reanudar').hidden = false;
+  $('btn-seguir').addEventListener('click', function () { ir(S.paso); });
+  $('btn-cero').addEventListener('click', function () {
+    if (!confirm('Se borra todo lo escrito y se empieza de nuevo. ¿Seguimos?')) return;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    location.href = location.pathname + '?nuevo';
+  });
+}
+ir(0);
+if (!puedeCifrar()) {
+  var av = document.createElement('div');
+  av.className = 'warn warn--soft';
+  av.textContent = 'Este navegador no puede cifrar el envío, normalmente porque el formulario se ha abierto como archivo y no desde su enlace web. Se enviará sin cifrar.';
+  document.querySelector('.step[data-step="11"] .card').appendChild(av);
+}
+
+})();
+</script>
+</body>
+</html>
