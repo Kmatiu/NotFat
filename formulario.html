@@ -629,7 +629,12 @@ $$('[data-radio]').forEach(function (box) {
       (o[2] ? '<span class="opt__d">' + esc(o[2]) + '</span>' : '') + '</span></button>';
   }).join('');
   box.addEventListener('click', function (ev) {
-    var b = ev.target.closest('.opt'); if (!b) return;
+    var b = ev.target.closest('.opt');
+    /* Ignorar si el .opt encontrado no pertenece a ESTE grupo concreto.
+       Sin esta comprobación, en móvil el evento burbujea y un click en
+       el grupo "trabajo" llegaba también al listener de "experiencia",
+       deseleccionando la opción que ya estaba marcada. */
+    if (!b || !box.contains(b)) return;
     S.radios[k] = b.dataset.v;
     pintarRadio(box, k);
     guardar();
