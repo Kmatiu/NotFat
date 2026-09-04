@@ -608,7 +608,7 @@ var S = { radios: {}, multi: {}, checks: {}, campos: {}, lesiones: [], nada: {},
 var paso = 0;
 
 function $(id) { return document.getElementById(id); }
-function $$(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
