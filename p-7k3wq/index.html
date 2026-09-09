@@ -188,6 +188,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 }
 .banner--propose { background: var(--streak-wash); border-color: #E8CE8A; }
 .banner--pause { background: var(--stop-wash); border-color: #E2B5AE; }
+.banner--view { background: var(--eat-wash); border-color: var(--eat); }
 .banner h3 { margin-bottom: 4px; }
 .banner p { font-size: 14px; margin-bottom: 10px; }
 
@@ -337,11 +338,17 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
   aspect-ratio: 1 / 1.25; border: 1px solid var(--line); border-radius: var(--r-s);
   background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
   font-size: 11px; color: var(--ink-mute); padding: 2px;
+  font-family: inherit; width: 100%; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
+.wk__d:active { transform: scale(.94); }
 .wk__d.is-train { border-color: var(--train); background: var(--train-wash); color: var(--train); }
 .wk__d.is-rest { background: var(--line-soft); }
 .wk__d.is-today { box-shadow: inset 0 0 0 2px var(--ink); }
 .wk__d.is-done::after { content: '✓'; font-size: 13px; font-weight: 800; color: var(--eat); }
+.wk__d.is-view { box-shadow: inset 0 0 0 2px var(--eat); }
+.wk__d.is-future { opacity: .45; }
+.wk__hint { font-size: 12.5px; color: var(--ink-mute); margin: 2px 0 10px; }
 .wk__n { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink); }
 
 .bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
@@ -432,6 +439,12 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
     <h3>Plan en pausa</h3>
     <p id="pause-text"></p>
     <button class="btn btn--s btn--ghost" id="btn-resume">Retomar el plan</button>
+  </div>
+
+  <div class="banner banner--view" id="view-banner" hidden>
+    <h3 id="view-title">Estás en otro día</h3>
+    <p id="view-text"></p>
+    <button class="btn btn--s btn--ghost" id="btn-back-today">Volver a hoy</button>
   </div>
 
   <div id="today-training"></div>
@@ -1975,7 +1988,7 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
 
 <script>
 /* ============================================================
-   PANEL DE PLAN PERSONAL · template v1.0
+   PANEL DE PLAN PERSONAL · template v1.1
    Todo el estado del usuario vive en este dispositivo (IndexedDB).
    Nada se envía a ningún sitio salvo cuando se exporta a mano.
    ============================================================ */
@@ -1995,6 +2008,8 @@ var __db = null;
 
 var STATE = { days: {}, kv: {} };
 var SHEET_HANDLERS = {};
+/* Día que se está repasando desde la pestaña de semana. null = el día en curso. */
+var VIEW_DATE = null;
 
 /* ---------- utilidades ---------- */
 function el(sel, root) { return (root || document).querySelector(sel); }
@@ -2133,15 +2148,36 @@ function recipeById(id) {
   for (var i = 0; i < rs.length; i++) if (rs[i].id === id) return rs[i];
   return null;
 }
-/* El día que se muestra: hoy si cae dentro del plan; si no, el extremo más cercano. */
-function activeDate() {
+/* El día que se muestra: el seleccionado a mano si lo hay, y si no hoy;
+   si hoy cae fuera del plan, el extremo más cercano. */
+function defaultDate() {
   var t = todayISO();
   if (t < FIRST) return FIRST;
   if (t > LAST) return LAST;
   return t;
 }
+function activeDate() {
+  if (VIEW_DATE && planDay(VIEW_DATE)) return VIEW_DATE;
+  return defaultDate();
+}
+/* True cuando se está repasando un día distinto del que toca. */
+function isReviewing() { return activeDate() !== defaultDate(); }
+/* Los días que aún no han llegado se enseñan, pero no se registran. */
+function isFuture(date) { return date > todayISO(); }
+
+/* Selecciona el día que muestra la pestaña de hoy. Con null, vuelve al día en curso. */
+function setViewDate(date) {
+  VIEW_DATE = (date && date !== defaultDate() && planDay(date)) ? date : null;
+  renderAll();
+  goTab('today');
+}
 function currentWeek() {
   var d = planDay(activeDate());
+  return d ? d.week : 1;
+}
+/* La semana en la que se está de verdad, al margen de la que se esté repasando. */
+function realWeek() {
+  var d = planDay(defaultDate());
   return d ? d.week : 1;
 }
 
@@ -2348,6 +2384,17 @@ function renderToday() {
   var banner = el('#plan-banner');
   var aprobado = getKV('approved', META.status === 'aprobado');
   banner.hidden = !!aprobado;
+  /* — aviso de que se está mirando un día que no es el de hoy — */
+  var vb = el('#view-banner');
+  vb.hidden = !isReviewing();
+  if (isReviewing()) {
+    var futuro = isFuture(date);
+    el('#view-title').textContent = futuro ? 'Un día que aún no ha llegado' : 'Repasando un día anterior';
+    el('#view-text').textContent = futuro
+      ? fechaLarga(date) + '. Se puede consultar lo que toca, pero el registro se abre cuando llegue el día.'
+      : fechaLarga(date) + '. Lo que se apunte aquí se guarda en ese día, no en hoy.';
+  }
+
   var pausa = getKV('pause', null);
   el('#pause-banner').hidden = !pausa;
   if (pausa) {
@@ -2369,7 +2416,7 @@ function renderToday() {
     box.innerHTML =
       '<div class="today' + (hecho ? ' is-done' : '') + '" id="today-card">' +
         (hecho ? '<div class="stamp">HECHO</div>' : '') +
-        '<div class="today__kicker">Hoy entrenas</div>' +
+        '<div class="today__kicker">' + (isReviewing() ? 'Ese día tocaba' : 'Hoy entrenas') + '</div>' +
         '<div class="today__name">' + esc(s.name || 'Sesión') + '</div>' +
         '<div class="today__meta">' +
           '<span class="chip chip--train">' + (s.duration_min || '—') + ' min</span>' +
@@ -2386,7 +2433,7 @@ function renderToday() {
   } else {
     box.innerHTML =
       '<div class="today today--rest">' +
-        '<div class="today__kicker">Hoy no toca entrenar</div>' +
+        '<div class="today__kicker">' + (isReviewing() ? 'Ese día no tocaba entrenar' : 'Hoy no toca entrenar') + '</div>' +
         '<div class="today__name">Descanso</div>' +
         (pd.active_rest ? '<p class="hint" style="margin-top:10px">' + esc(pd.active_rest) + '</p>' :
           '<p class="hint" style="margin-top:10px">Descansar es parte del plan: es cuando el cuerpo asimila lo entrenado.</p>') +
@@ -2433,6 +2480,12 @@ function renderToday() {
   }
 
   /* — registro del día — */
+  if (isFuture(date)) {
+    el('#today-log').innerHTML =
+      '<p class="hint">El registro de este día se abre cuando llegue. Lo de arriba es lo que hay previsto.</p>';
+    el('#today-docs').innerHTML = '';
+    return;
+  }
   var cfg = (DATA.checkin_config && DATA.checkin_config.daily) || ['agua', 'pasos', 'sueno', 'energia', 'animo', 'nota'];
   var L = '';
   if (cfg.indexOf('agua') > -1) L += rowStepper('Agua', 'vasos a lo largo del día', 'water', d.water || 0, 1, 0, 15);
@@ -2469,7 +2522,7 @@ function rowDots(label, sub, key, val) {
    PÁGINA: SEMANA
    ============================================================ */
 function renderWeek() {
-  var wActual = currentWeek();
+  var wActual = realWeek();
   var h = '';
   (DATA.weeks || []).forEach(function (w) {
     var ad = adherence(w.week);
@@ -2485,13 +2538,17 @@ function renderWeek() {
       var hecho = !!(log.training && log.training.done);
       var cls = s ? 'is-train' : 'is-rest';
       if (d.date === todayISO()) cls += ' is-today';
+      if (d.date === activeDate() && isReviewing()) cls += ' is-view';
+      if (isFuture(d.date)) cls += ' is-future';
       if (hecho) cls += ' is-done';
-      h += '<div class="wk__d ' + cls + '" title="' + esc(fechaLarga(d.date)) + '">' +
+      h += '<button type="button" class="wk__d ' + cls + '" data-goday="' + esc(d.date) + '"' +
+        ' title="' + esc(fechaLarga(d.date)) + '" aria-label="' + esc(fechaLarga(d.date)) + '">' +
         '<span>' + (d.weekday || '').slice(0, 1).toUpperCase() + '</span>' +
         '<span class="wk__n">' + fromISO(d.date).getDate() + '</span>' +
-        '</div>';
+        '</button>';
     });
     h += '</div>';
+    h += '<p class="wk__hint">Cualquier día se abre con un toque, también los que ya han pasado: si se quedó algo sin marcar, se apunta ahí.</p>';
     if (HAS_TRAIN) {
       h += '<div class="kv"><span>Entrenos</span><span class="kv__v">' + ad.sessions_done + ' de ' + ad.sessions_planned + '</span></div>';
     }
@@ -3110,6 +3167,11 @@ els('.tabs__b').forEach(function (b) {
 document.addEventListener('click', function (ev) {
   var t = ev.target;
 
+  var goday = t.closest('[data-goday]');
+  if (goday) { setViewDate(goday.dataset.goday); return; }
+
+  if (t.closest('#btn-back-today')) { setViewDate(null); return; }
+
   var close = t.closest('[data-close]');
   if (close) { closeSheet(); return; }
 
@@ -3135,6 +3197,7 @@ document.addEventListener('click', function (ev) {
 
   var tri = t.closest('[data-meal-state] .tri__b');
   if (tri) {
+    if (isFuture(activeDate())) { toast('Ese día todavía no ha llegado.'); return; }
     var mid = tri.closest('[data-meal-state]').dataset.mealState;
     var m = {}; m[mid] = tri.dataset.v;
     els('.tri__b', tri.parentNode).forEach(function (b) { b.classList.toggle('is-on', b === tri); });
@@ -3182,6 +3245,7 @@ document.addEventListener('click', function (ev) {
 
   if (t.closest('#btn-done') || t.closest('#btn-done-sheet')) {
     var dt = el('#sheet-body').dataset.date || activeDate();
+    if (isFuture(dt)) { toast('Ese día todavía no ha llegado.'); return; }
     var yaHecho = !!((STATE.days[dt] || {}).training || {}).done;
     saveDayLog(dt, { training: { done: !yaHecho } }).then(function () {
       renderAll();
