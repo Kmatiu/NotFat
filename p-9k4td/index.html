@@ -45,7 +45,8 @@
   --r: 12px;
   --r-l: 20px;
 
-  --tab-h: 62px;
+  --fs: 1;
+  --tab-h: calc(62px * var(--fs));
   --top: env(safe-area-inset-top, 0px);
   --bot: env(safe-area-inset-bottom, 0px);
   --ease: 180ms cubic-bezier(.4, 0, .2, 1);
@@ -60,7 +61,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--body);
-  font-size: 16px;
+  font-size: calc(16px * var(--fs));
   line-height: 1.5;
   padding-bottom: calc(var(--tab-h) + var(--bot));
   -webkit-font-smoothing: antialiased;
@@ -73,9 +74,9 @@ h1, h2, h3, .num {
   letter-spacing: -0.02em;
   margin: 0;
 }
-h1 { font-size: 30px; font-weight: 800; line-height: 1.1; }
-h2 { font-size: 21px; font-weight: 700; line-height: 1.2; }
-h3 { font-size: 16px; font-weight: 700; }
+h1 { font-size: calc(30px * var(--fs)); font-weight: 800; line-height: 1.1; }
+h2 { font-size: calc(21px * var(--fs)); font-weight: 700; line-height: 1.2; }
+h3 { font-size: calc(16px * var(--fs)); font-weight: 700; }
 p { margin: 0 0 12px; max-width: 70ch; }
 p:last-child { margin-bottom: 0; }
 a { color: var(--train); }
@@ -99,8 +100,8 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   border-bottom: 1px solid var(--line-soft);
 }
 .top__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.top__date { font-family: var(--display); font-weight: 700; font-size: 17px; }
-.top__week { color: var(--ink-mute); font-size: 13px; font-variant-numeric: tabular-nums; }
+.top__date { font-family: var(--display); font-weight: 700; font-size: calc(17px * var(--fs)); }
+.top__week { color: var(--ink-mute); font-size: calc(13px * var(--fs)); font-variant-numeric: tabular-nums; }
 
 .page { display: none; padding: 18px 18px 32px; }
 .page.is-on { display: block; animation: fade var(--ease); }
@@ -116,7 +117,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 }
 .tabs__b {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; font-size: 11px; font-weight: 600; color: var(--ink-mute);
+  gap: 3px; font-size: calc(11px * var(--fs)); font-weight: 600; color: var(--ink-mute);
   position: relative; transition: color var(--ease);
 }
 .tabs__b svg { width: 21px; height: 21px; }
@@ -145,18 +146,18 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 
 .sec { margin: 26px 0 12px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .sec:first-child { margin-top: 0; }
-.sec__n { color: var(--ink-mute); font-size: 13px; font-variant-numeric: tabular-nums; }
+.sec__n { color: var(--ink-mute); font-size: calc(13px * var(--fs)); font-variant-numeric: tabular-nums; }
 
 .mute { color: var(--ink-mute); }
-.small { font-size: 14px; }
-.tiny { font-size: 12.5px; }
-.hint { color: var(--ink-mute); font-size: 13.5px; line-height: 1.45; }
+.small { font-size: calc(14px * var(--fs)); }
+.tiny { font-size: calc(12.5px * var(--fs)); }
+.hint { color: var(--ink-mute); font-size: calc(13.5px * var(--fs)); line-height: 1.45; }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 46px; padding: 0 18px;
   border-radius: var(--r); border: 1px solid var(--ink);
-  background: var(--ink); color: #fff; font-weight: 700; font-size: 15px;
+  background: var(--ink); color: #fff; font-weight: 700; font-size: calc(15px * var(--fs));
   transition: transform var(--ease), opacity var(--ease);
 }
 .btn:active { transform: scale(.98); }
@@ -165,7 +166,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .btn--eat { background: var(--eat); border-color: var(--eat); }
 .btn--stop { background: transparent; color: var(--stop); border-color: var(--stop); }
 .btn--wide { width: 100%; }
-.btn--s { min-height: 38px; padding: 0 12px; font-size: 14px; border-radius: var(--r-s); }
+.btn--s { min-height: 38px; padding: 0 12px; font-size: calc(14px * var(--fs)); border-radius: var(--r-s); }
 .btn[disabled] { opacity: .45; pointer-events: none; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn-row > .btn { flex: 1 1 auto; }
@@ -174,7 +175,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   display: inline-flex; align-items: center; gap: 5px;
   padding: 4px 10px; border-radius: 999px;
   background: var(--line-soft); color: var(--ink-soft);
-  font-size: 12.5px; font-weight: 600; white-space: nowrap;
+  font-size: calc(12.5px * var(--fs)); font-weight: 600; white-space: nowrap;
 }
 .chip--train { background: var(--train-wash); color: var(--train); }
 .chip--eat { background: var(--eat-wash); color: var(--eat); }
@@ -188,8 +189,9 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 }
 .banner--propose { background: var(--streak-wash); border-color: #E8CE8A; }
 .banner--pause { background: var(--stop-wash); border-color: #E2B5AE; }
+.banner--view { background: var(--eat-wash); border-color: var(--eat); }
 .banner h3 { margin-bottom: 4px; }
-.banner p { font-size: 14px; margin-bottom: 10px; }
+.banner p { font-size: calc(14px * var(--fs)); margin-bottom: 10px; }
 
 /* ---- Tarjeta de la sesión de hoy: el elemento con más peso visual ---- */
 .today {
@@ -200,9 +202,9 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 }
 .today--rest { border-left-color: var(--ink-mute); }
 .today--eat { border-left-color: var(--eat); }
-.today__kicker { font-size: 12.5px; font-weight: 700; color: var(--train); margin-bottom: 6px; }
+.today__kicker { font-size: calc(12.5px * var(--fs)); font-weight: 700; color: var(--train); margin-bottom: 6px; }
 .today--rest .today__kicker { color: var(--ink-mute); }
-.today__name { font-family: var(--display); font-size: 27px; font-weight: 800; line-height: 1.08; letter-spacing: -.03em; }
+.today__name { font-family: var(--display); font-size: calc(27px * var(--fs)); font-weight: 800; line-height: 1.08; letter-spacing: -.03em; }
 .today__meta { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
 .today__actions { margin-top: 14px; display: flex; gap: 10px; }
 .today.is-done { border-left-color: var(--eat); }
@@ -212,7 +214,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   transform: rotate(-11deg);
   border: 3px solid var(--eat); color: var(--eat);
   border-radius: 8px; padding: 4px 10px;
-  font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: .02em;
+  font-family: var(--display); font-weight: 800; font-size: calc(15px * var(--fs)); letter-spacing: .02em;
   opacity: .92;
 }
 .stamp--in { animation: stamp 320ms cubic-bezier(.2, 1.6, .4, 1); }
@@ -232,7 +234,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .streak__d.is-full { background: var(--streak); }
 .streak__d.is-half { background: linear-gradient(to top, var(--streak) 50%, var(--line) 50%); }
 .streak__d.is-today { box-shadow: inset 0 0 0 2px var(--ink); }
-.streak__n { font-family: var(--display); font-weight: 800; font-size: 19px; }
+.streak__n { font-family: var(--display); font-weight: 800; font-size: calc(19px * var(--fs)); }
 
 /* ---- Registro diario ---- */
 .log__row {
@@ -240,14 +242,14 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line-soft);
 }
 .log__row:last-child { border-bottom: 0; }
-.log__label { font-size: 15px; font-weight: 600; }
-.log__sub { font-size: 12.5px; color: var(--ink-mute); font-weight: 400; }
+.log__label { font-size: calc(15px * var(--fs)); font-weight: 600; }
+.log__sub { font-size: calc(12.5px * var(--fs)); color: var(--ink-mute); font-weight: 400; }
 
 .tri { display: flex; gap: 4px; }
 .tri__b {
   min-width: 42px; height: 34px; border-radius: var(--r-s);
   border: 1px solid var(--line); background: var(--card);
-  font-size: 13px; font-weight: 700; color: var(--ink-mute);
+  font-size: calc(13px * var(--fs)); font-weight: 700; color: var(--ink-mute);
 }
 .tri__b.is-on[data-v="si"] { background: var(--eat); border-color: var(--eat); color: #fff; }
 .tri__b.is-on[data-v="parcial"] { background: var(--streak); border-color: var(--streak); color: #3A2C00; }
@@ -264,57 +266,57 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .stepper__b {
   width: 34px; height: 34px; border-radius: var(--r-s);
   border: 1px solid var(--line); background: var(--card);
-  font-size: 19px; font-weight: 700; line-height: 1; color: var(--ink-soft);
+  font-size: calc(19px * var(--fs)); font-weight: 700; line-height: 1; color: var(--ink-soft);
 }
-.stepper__v { min-width: 58px; text-align: center; font-family: var(--display); font-weight: 700; font-size: 17px; }
+.stepper__v { min-width: 58px; text-align: center; font-family: var(--display); font-weight: 700; font-size: calc(17px * var(--fs)); }
 
 .field {
   width: 100%; min-height: 44px; padding: 10px 12px;
   border: 1px solid var(--line); border-radius: var(--r-s);
-  background: var(--card); font-size: 16px;
+  background: var(--card); font-size: calc(16px * var(--fs));
 }
 textarea.field { min-height: 76px; resize: vertical; line-height: 1.45; }
 .field:focus { border-color: var(--train); outline: none; }
-label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
 
 /* ---- Comida ---- */
 .meal { border-bottom: 1px solid var(--line-soft); padding: 14px 0; }
 .meal:last-child { border-bottom: 0; padding-bottom: 0; }
 .meal__h { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.meal__name { font-family: var(--display); font-weight: 700; font-size: 17px; }
-.meal__time { font-size: 12.5px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+.meal__name { font-family: var(--display); font-weight: 700; font-size: calc(17px * var(--fs)); }
+.meal__time { font-size: calc(12.5px * var(--fs)); color: var(--ink-mute); font-variant-numeric: tabular-nums; }
 .opt {
   display: block; width: 100%; text-align: left;
   border: 1px solid var(--line); border-radius: var(--r-s);
   padding: 11px 12px; margin-top: 8px; background: var(--card);
 }
 .opt.is-picked { border-color: var(--eat); background: var(--eat-wash); }
-.opt__t { font-weight: 700; font-size: 15px; }
-.opt__d { font-size: 13.5px; color: var(--ink-soft); margin-top: 3px; }
+.opt__t { font-weight: 700; font-size: calc(15px * var(--fs)); }
+.opt__d { font-size: calc(13.5px * var(--fs)); color: var(--ink-soft); margin-top: 3px; }
 .opt__m { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 5px; }
 
 .ration {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 3px 8px; border-radius: 999px;
   background: var(--eat-wash); color: #2F4626;
-  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+  font-size: calc(12px * var(--fs)); font-weight: 700; font-variant-numeric: tabular-nums;
 }
 
 .guide { display: grid; grid-template-columns: 1fr; gap: 0; }
 .guide__r { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
 .guide__r:last-child { border-bottom: 0; }
-.guide__i { font-size: 22px; line-height: 1.2; width: 30px; flex: none; text-align: center; }
-.guide__g { font-weight: 700; font-size: 15px; }
-.guide__m { font-size: 13.5px; color: var(--ink-soft); }
-.guide__e { font-size: 12.5px; color: var(--ink-mute); margin-top: 2px; }
+.guide__i { font-size: calc(22px * var(--fs)); line-height: 1.2; width: 30px; flex: none; text-align: center; }
+.guide__g { font-weight: 700; font-size: calc(15px * var(--fs)); }
+.guide__m { font-size: calc(13.5px * var(--fs)); color: var(--ink-soft); }
+.guide__e { font-size: calc(12.5px * var(--fs)); color: var(--ink-mute); margin-top: 2px; }
 
 /* ---- Ejercicios ---- */
 .ex { border: 1px solid var(--line); border-radius: var(--r); margin-bottom: 10px; background: var(--card); overflow: hidden; }
 .ex__h { display: flex; align-items: center; gap: 12px; padding: 13px 14px; width: 100%; text-align: left; }
 .ex__n { flex: 1; }
-.ex__name { font-weight: 700; font-size: 15.5px; line-height: 1.25; }
-.ex__pre { font-size: 13px; color: var(--ink-mute); font-variant-numeric: tabular-nums; margin-top: 2px; }
-.ex__mark { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); flex: none; display: grid; place-items: center; font-size: 13px; color: transparent; }
+.ex__name { font-weight: 700; font-size: calc(15.5px * var(--fs)); line-height: 1.25; }
+.ex__pre { font-size: calc(13px * var(--fs)); color: var(--ink-mute); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.ex__mark { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); flex: none; display: grid; place-items: center; font-size: calc(13px * var(--fs)); color: transparent; }
 .ex__mark.is-on { background: var(--train); border-color: var(--train); color: #fff; }
 .ex__body { display: none; padding: 0 14px 14px; border-top: 1px solid var(--line-soft); }
 .ex.is-open .ex__body { display: block; }
@@ -323,26 +325,32 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
   display: flex; align-items: center; gap: 5px;
   border: 1px solid var(--line); border-radius: var(--r-s); padding: 5px 7px;
 }
-.set__n { font-size: 12px; font-weight: 700; color: var(--ink-mute); width: 14px; }
-.set input { width: 52px; text-align: center; border: 0; border-bottom: 1px solid var(--line); background: transparent; font-size: 15px; font-variant-numeric: tabular-nums; padding: 2px 0; }
+.set__n { font-size: calc(12px * var(--fs)); font-weight: 700; color: var(--ink-mute); width: 14px; }
+.set input { width: 52px; text-align: center; border: 0; border-bottom: 1px solid var(--line); background: transparent; font-size: calc(15px * var(--fs)); font-variant-numeric: tabular-nums; padding: 2px 0; }
 .set input:focus { outline: none; border-bottom-color: var(--train); }
-.cues { margin: 10px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-soft); }
+.cues { margin: 10px 0 0; padding-left: 18px; font-size: calc(13.5px * var(--fs)); color: var(--ink-soft); }
 .cues li { margin-bottom: 4px; }
-.swap { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); background: var(--line-soft); padding: 9px 11px; border-radius: var(--r-s); }
-.lastload { font-size: 12.5px; color: var(--train); font-weight: 600; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.swap { margin-top: 10px; font-size: calc(13.5px * var(--fs)); color: var(--ink-soft); background: var(--line-soft); padding: 9px 11px; border-radius: var(--r-s); }
+.lastload { font-size: calc(12.5px * var(--fs)); color: var(--train); font-weight: 600; margin-top: 6px; font-variant-numeric: tabular-nums; }
 
 /* ---- Semana ---- */
 .wk { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 6px; }
 .wk__d {
   aspect-ratio: 1 / 1.25; border: 1px solid var(--line); border-radius: var(--r-s);
   background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  font-size: 11px; color: var(--ink-mute); padding: 2px;
+  font-size: calc(11px * var(--fs)); color: var(--ink-mute); padding: 2px;
+  font-family: inherit; width: 100%; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
+.wk__d:active { transform: scale(.94); }
 .wk__d.is-train { border-color: var(--train); background: var(--train-wash); color: var(--train); }
 .wk__d.is-rest { background: var(--line-soft); }
 .wk__d.is-today { box-shadow: inset 0 0 0 2px var(--ink); }
-.wk__d.is-done::after { content: '✓'; font-size: 13px; font-weight: 800; color: var(--eat); }
-.wk__n { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--ink); }
+.wk__d.is-done::after { content: '✓'; font-size: calc(13px * var(--fs)); font-weight: 800; color: var(--eat); }
+.wk__d.is-view { box-shadow: inset 0 0 0 2px var(--eat); }
+.wk__d.is-future { opacity: .45; }
+.wk__hint { font-size: calc(12.5px * var(--fs)); color: var(--ink-mute); margin: 2px 0 10px; }
+.wk__n { font-family: var(--display); font-weight: 700; font-size: calc(15px * var(--fs)); color: var(--ink); }
 
 .bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
 .bar__f { height: 100%; background: var(--train); border-radius: 999px; }
@@ -356,23 +364,23 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
 .ach { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line-soft); opacity: .45; }
 .ach:last-child { border-bottom: 0; }
 .ach.is-got { opacity: 1; }
-.ach__i { font-size: 24px; width: 34px; text-align: center; flex: none; }
-.ach__t { font-weight: 700; font-size: 15px; }
-.ach__d { font-size: 13px; color: var(--ink-mute); }
+.ach__i { font-size: calc(24px * var(--fs)); width: 34px; text-align: center; flex: none; }
+.ach__t { font-weight: 700; font-size: calc(15px * var(--fs)); }
+.ach__d { font-size: calc(13px * var(--fs)); color: var(--ink-mute); }
 
 /* ---- Utilidades ---- */
 .acc { border: 1px solid var(--line); border-radius: var(--r); background: var(--card); margin-bottom: 10px; }
-.acc__h { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; text-align: left; font-weight: 700; font-size: 15.5px; }
-.acc__h span.acc__i { font-size: 19px; }
+.acc__h { display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; text-align: left; font-weight: 700; font-size: calc(15.5px * var(--fs)); }
+.acc__h span.acc__i { font-size: calc(19px * var(--fs)); }
 .acc__c { display: none; padding: 0 14px 14px; }
 .acc.is-open .acc__c { display: block; }
 .acc__ar { margin-left: auto; color: var(--ink-mute); transition: transform var(--ease); }
 .acc.is-open .acc__ar { transform: rotate(90deg); }
 
-.list { margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--ink-soft); }
+.list { margin: 0; padding-left: 20px; font-size: calc(14.5px * var(--fs)); color: var(--ink-soft); }
 .list li { margin-bottom: 6px; }
 
-.kv { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: 14.5px; }
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(14.5px * var(--fs)); }
 .kv:last-child { border-bottom: 0; }
 .kv__v { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
 
@@ -380,7 +388,7 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
   position: fixed; left: 50%; bottom: calc(var(--tab-h) + var(--bot) + 16px);
   transform: translateX(-50%) translateY(12px);
   background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px;
-  font-size: 14px; font-weight: 600; z-index: 90; opacity: 0; pointer-events: none;
+  font-size: calc(14px * var(--fs)); font-weight: 600; z-index: 90; opacity: 0; pointer-events: none;
   transition: opacity var(--ease), transform var(--ease); max-width: 88vw; text-align: center;
 }
 .toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -396,13 +404,53 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
 }
 .sheet__t { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 
-.empty { text-align: center; padding: 34px 18px; color: var(--ink-mute); font-size: 14.5px; }
+.empty { text-align: center; padding: 34px 18px; color: var(--ink-mute); font-size: calc(14.5px * var(--fs)); }
 
 @media print {
   .tabs, .top, .btn, .tri, .dots, .stepper { display: none !important; }
   .page { display: block !important; }
   body { background: #fff; padding: 0; }
 }
+
+/* ── Tamaño del texto ──────────────────────────────────────────────────────────
+   El botón «Aa» de la cabecera multiplica --fs, y de ahí cuelga toda la
+   tipografía del panel. Sus propias medidas van en píxeles fijos: si creciera
+   con el ajuste, a partir del segundo nivel echaría la fecha fuera de la
+   cabecera. La marca de nivel son los tres puntitos de debajo. */
+.top__tools { display: flex; align-items: center; gap: 14px; flex: none; align-self: center; }
+/* La fecha cede espacio antes que desbordar la cabecera en pantallas estrechas. */
+.top__row > div:first-child { min-width: 0; }
+.aa {
+  flex: none; position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 46px; height: 36px; padding: 0 10px 5px;
+  border: 1px solid var(--line); border-radius: var(--r-s);
+  background: var(--card); color: var(--ink-soft);
+  font-family: var(--display); font-weight: 800; line-height: 1;
+  letter-spacing: -0.01em;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background var(--ease), color var(--ease), border-color var(--ease);
+}
+.aa::after {
+  content: ''; position: absolute; left: 50%; bottom: 5px;
+  transform: translateX(-50%);
+  width: 22px; height: 3px; border-radius: 2px;
+  background:
+    linear-gradient(to right,
+      var(--nivel-1) 0 6px, transparent 6px 8px,
+      var(--nivel-2) 8px 14px, transparent 14px 16px,
+      var(--nivel-3) 16px 22px);
+  --nivel-1: var(--ink); --nivel-2: var(--line); --nivel-3: var(--line);
+}
+.aa[data-lvl="0"] { font-size: 15px; }
+.aa[data-lvl="1"] { font-size: 18px; background: var(--streak-wash); border-color: #E8CE8A; color: #6A5000; }
+.aa[data-lvl="1"]::after { --nivel-2: var(--ink); }
+.aa[data-lvl="2"] { font-size: 21px; background: var(--streak-wash); border-color: #E8CE8A; color: #6A5000; }
+.aa[data-lvl="2"]::after { --nivel-2: var(--ink); --nivel-3: var(--ink); }
+.aa:active { background: var(--line-soft); }
+.aa:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media print { .aa { display: none; } }
+
 </style>
 </head>
 <body>
@@ -413,7 +461,11 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
       <div class="top__date" id="top-date">—</div>
       <div class="top__week" id="top-week"></div>
     </div>
-    <div class="streak" id="top-streak"></div>
+    <div class="top__tools">
+      <div class="streak" id="top-streak"></div>
+      <button type="button" class="aa" id="btn-textsize" data-lvl="0"
+              aria-label="Tamaño del texto: normal" title="Tamaño del texto">Aa</button>
+    </div>
   </div>
 </header>
 
@@ -432,6 +484,12 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
     <h3>Plan en pausa</h3>
     <p id="pause-text"></p>
     <button class="btn btn--s btn--ghost" id="btn-resume">Retomar el plan</button>
+  </div>
+
+  <div class="banner banner--view" id="view-banner" hidden>
+    <h3 id="view-title">Estás en otro día</h3>
+    <p id="view-text"></p>
+    <button class="btn btn--s btn--ghost" id="btn-back-today">Volver a hoy</button>
   </div>
 
   <div id="today-training"></div>
@@ -1860,7 +1918,7 @@ label.lbl { display: block; font-size: 13px; font-weight: 600; color: var(--ink-
 
 <script>
 /* ============================================================
-   PANEL DE PLAN PERSONAL · template v1.0
+   PANEL DE PLAN PERSONAL · template v1.2
    Todo el estado del usuario vive en este dispositivo (IndexedDB).
    Nada se envía a ningún sitio salvo cuando se exporta a mano.
    ============================================================ */
@@ -1880,6 +1938,8 @@ var __db = null;
 
 var STATE = { days: {}, kv: {} };
 var SHEET_HANDLERS = {};
+/* Día que se está repasando desde la pestaña de semana. null = el día en curso. */
+var VIEW_DATE = null;
 
 /* ---------- utilidades ---------- */
 function el(sel, root) { return (root || document).querySelector(sel); }
@@ -2018,15 +2078,36 @@ function recipeById(id) {
   for (var i = 0; i < rs.length; i++) if (rs[i].id === id) return rs[i];
   return null;
 }
-/* El día que se muestra: hoy si cae dentro del plan; si no, el extremo más cercano. */
-function activeDate() {
+/* El día que se muestra: el seleccionado a mano si lo hay, y si no hoy;
+   si hoy cae fuera del plan, el extremo más cercano. */
+function defaultDate() {
   var t = todayISO();
   if (t < FIRST) return FIRST;
   if (t > LAST) return LAST;
   return t;
 }
+function activeDate() {
+  if (VIEW_DATE && planDay(VIEW_DATE)) return VIEW_DATE;
+  return defaultDate();
+}
+/* True cuando se está repasando un día distinto del que toca. */
+function isReviewing() { return activeDate() !== defaultDate(); }
+/* Los días que aún no han llegado se enseñan, pero no se registran. */
+function isFuture(date) { return date > todayISO(); }
+
+/* Selecciona el día que muestra la pestaña de hoy. Con null, vuelve al día en curso. */
+function setViewDate(date) {
+  VIEW_DATE = (date && date !== defaultDate() && planDay(date)) ? date : null;
+  renderAll();
+  goTab('today');
+}
 function currentWeek() {
   var d = planDay(activeDate());
+  return d ? d.week : 1;
+}
+/* La semana en la que se está de verdad, al margen de la que se esté repasando. */
+function realWeek() {
+  var d = planDay(defaultDate());
   return d ? d.week : 1;
 }
 
@@ -2233,6 +2314,17 @@ function renderToday() {
   var banner = el('#plan-banner');
   var aprobado = getKV('approved', META.status === 'aprobado');
   banner.hidden = !!aprobado;
+  /* — aviso de que se está mirando un día que no es el de hoy — */
+  var vb = el('#view-banner');
+  vb.hidden = !isReviewing();
+  if (isReviewing()) {
+    var futuro = isFuture(date);
+    el('#view-title').textContent = futuro ? 'Un día que aún no ha llegado' : 'Repasando un día anterior';
+    el('#view-text').textContent = futuro
+      ? fechaLarga(date) + '. Se puede consultar lo que toca, pero el registro se abre cuando llegue el día.'
+      : fechaLarga(date) + '. Lo que se apunte aquí se guarda en ese día, no en hoy.';
+  }
+
   var pausa = getKV('pause', null);
   el('#pause-banner').hidden = !pausa;
   if (pausa) {
@@ -2254,7 +2346,7 @@ function renderToday() {
     box.innerHTML =
       '<div class="today' + (hecho ? ' is-done' : '') + '" id="today-card">' +
         (hecho ? '<div class="stamp">HECHO</div>' : '') +
-        '<div class="today__kicker">Hoy entrenas</div>' +
+        '<div class="today__kicker">' + (isReviewing() ? 'Ese día tocaba' : 'Hoy entrenas') + '</div>' +
         '<div class="today__name">' + esc(s.name || 'Sesión') + '</div>' +
         '<div class="today__meta">' +
           '<span class="chip chip--train">' + (s.duration_min || '—') + ' min</span>' +
@@ -2271,7 +2363,7 @@ function renderToday() {
   } else {
     box.innerHTML =
       '<div class="today today--rest">' +
-        '<div class="today__kicker">Hoy no toca entrenar</div>' +
+        '<div class="today__kicker">' + (isReviewing() ? 'Ese día no tocaba entrenar' : 'Hoy no toca entrenar') + '</div>' +
         '<div class="today__name">Descanso</div>' +
         (pd.active_rest ? '<p class="hint" style="margin-top:10px">' + esc(pd.active_rest) + '</p>' :
           '<p class="hint" style="margin-top:10px">Descansar es parte del plan: es cuando el cuerpo asimila lo entrenado.</p>') +
@@ -2318,6 +2410,12 @@ function renderToday() {
   }
 
   /* — registro del día — */
+  if (isFuture(date)) {
+    el('#today-log').innerHTML =
+      '<p class="hint">El registro de este día se abre cuando llegue. Lo de arriba es lo que hay previsto.</p>';
+    el('#today-docs').innerHTML = '';
+    return;
+  }
   var cfg = (DATA.checkin_config && DATA.checkin_config.daily) || ['agua', 'pasos', 'sueno', 'energia', 'animo', 'nota'];
   var L = '';
   if (cfg.indexOf('agua') > -1) L += rowStepper('Agua', 'vasos a lo largo del día', 'water', d.water || 0, 1, 0, 15);
@@ -2354,7 +2452,7 @@ function rowDots(label, sub, key, val) {
    PÁGINA: SEMANA
    ============================================================ */
 function renderWeek() {
-  var wActual = currentWeek();
+  var wActual = realWeek();
   var h = '';
   (DATA.weeks || []).forEach(function (w) {
     var ad = adherence(w.week);
@@ -2370,13 +2468,17 @@ function renderWeek() {
       var hecho = !!(log.training && log.training.done);
       var cls = s ? 'is-train' : 'is-rest';
       if (d.date === todayISO()) cls += ' is-today';
+      if (d.date === activeDate() && isReviewing()) cls += ' is-view';
+      if (isFuture(d.date)) cls += ' is-future';
       if (hecho) cls += ' is-done';
-      h += '<div class="wk__d ' + cls + '" title="' + esc(fechaLarga(d.date)) + '">' +
+      h += '<button type="button" class="wk__d ' + cls + '" data-goday="' + esc(d.date) + '"' +
+        ' title="' + esc(fechaLarga(d.date)) + '" aria-label="' + esc(fechaLarga(d.date)) + '">' +
         '<span>' + (d.weekday || '').slice(0, 1).toUpperCase() + '</span>' +
         '<span class="wk__n">' + fromISO(d.date).getDate() + '</span>' +
-        '</div>';
+        '</button>';
     });
     h += '</div>';
+    h += '<p class="wk__hint">Cualquier día se abre con un toque, también los que ya han pasado: si se quedó algo sin marcar, se apunta ahí.</p>';
     if (HAS_TRAIN) {
       h += '<div class="kv"><span>Entrenos</span><span class="kv__v">' + ad.sessions_done + ' de ' + ad.sessions_planned + '</span></div>';
     }
@@ -2995,6 +3097,11 @@ els('.tabs__b').forEach(function (b) {
 document.addEventListener('click', function (ev) {
   var t = ev.target;
 
+  var goday = t.closest('[data-goday]');
+  if (goday) { setViewDate(goday.dataset.goday); return; }
+
+  if (t.closest('#btn-back-today')) { setViewDate(null); return; }
+
   var close = t.closest('[data-close]');
   if (close) { closeSheet(); return; }
 
@@ -3020,6 +3127,7 @@ document.addEventListener('click', function (ev) {
 
   var tri = t.closest('[data-meal-state] .tri__b');
   if (tri) {
+    if (isFuture(activeDate())) { toast('Ese día todavía no ha llegado.'); return; }
     var mid = tri.closest('[data-meal-state]').dataset.mealState;
     var m = {}; m[mid] = tri.dataset.v;
     els('.tri__b', tri.parentNode).forEach(function (b) { b.classList.toggle('is-on', b === tri); });
@@ -3067,6 +3175,7 @@ document.addEventListener('click', function (ev) {
 
   if (t.closest('#btn-done') || t.closest('#btn-done-sheet')) {
     var dt = el('#sheet-body').dataset.date || activeDate();
+    if (isFuture(dt)) { toast('Ese día todavía no ha llegado.'); return; }
     var yaHecho = !!((STATE.days[dt] || {}).training || {}).done;
     saveDayLog(dt, { training: { done: !yaHecho } }).then(function () {
       renderAll();
@@ -3219,7 +3328,44 @@ function renderAll() {
 
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
 
+
+/* ============================================================
+   TAMAÑO DEL TEXTO
+   Tres niveles para quien no ve bien de cerca. El factor vive en la variable
+   CSS --fs y multiplica todos los tamaños del panel de una vez. La preferencia
+   se guarda con el resto del estado, así que sobrevive a cerrar la aplicación.
+   ============================================================ */
+var TEXT_STEPS = [
+  { fs: 1,    label: 'normal' },
+  { fs: 1.18, label: 'grande' },
+  { fs: 1.38, label: 'muy grande' }
+];
+function applyTextSize(i, avisar) {
+  var n = parseInt(i, 10) || 0;
+  if (n < 0 || n >= TEXT_STEPS.length) n = 0;
+  var paso = TEXT_STEPS[n];
+  document.documentElement.style.setProperty('--fs', String(paso.fs));
+  var b = el('#btn-textsize');
+  if (b) {
+    b.dataset.lvl = String(n);
+    b.setAttribute('aria-label', 'Tamaño del texto: ' + paso.label);
+    b.title = 'Tamaño del texto: ' + paso.label;
+  }
+  if (avisar) toast('Texto ' + paso.label + '.');
+}
+function cycleTextSize() {
+  var n = (parseInt(getKV('text_scale', 0), 10) || 0) + 1;
+  if (n >= TEXT_STEPS.length) n = 0;
+  applyTextSize(n, true);
+  setKV('text_scale', n);
+}
+document.addEventListener('click', function (ev) {
+  var t = ev.target;
+  if (t && t.closest && t.closest('#btn-textsize')) cycleTextSize();
+});
+
 loadState().then(function () {
+  applyTextSize(getKV('text_scale', 0), false);
   renderAll();
   checkAchievements();
   /* Aviso de fin de semana: el domingo por la tarde toca preparar el envío. */
