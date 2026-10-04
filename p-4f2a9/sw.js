@@ -235,6 +235,7 @@ self.addEventListener('message', function (e) {
     return;
   }
 
+
   if (data.type === 'CLEAR') {
     var portC = e.ports && e.ports[0];
     e.waitUntil(
