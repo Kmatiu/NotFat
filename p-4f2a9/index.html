@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="robots" content="noindex, nofollow">
-<title>Plan de octubre · Ronie — quince minutos por comida</title>
+<title>Plan de octubre · Ronie — la semana de un vistazo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
@@ -436,6 +436,44 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
 
 .empty { text-align: center; padding: 34px 18px; color: var(--ink-mute); font-size: calc(14.5px * var(--fs)); }
 
+/* ── Cuadrante semanal ────────────────────────────────────────────────────────
+   Pantalla completa por encima de todo. Los tamaños cuelgan de --fs, así que
+   el botón «Aa» también lo escala. */
+.grid { position: fixed; inset: 0; z-index: 90; display: none; background: var(--paper); }
+.grid.is-on { display: flex; flex-direction: column; }
+.grid__t {
+  display: flex; align-items: center; gap: 7px; flex: 0 0 auto;
+  padding: calc(10px + var(--top)) 12px 10px; background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.grid__t h2 { flex: 1 1 auto; min-width: 0; font-size: calc(15px * var(--fs)); line-height: 1.25; }
+.grid__s { flex: 1 1 auto; overflow: auto; -webkit-overflow-scrolling: touch; padding: 12px; }
+.grid__g { display: grid; gap: 5px; align-items: stretch; }
+.gh {
+  display: flex; align-items: center; gap: 5px; padding: 5px 3px;
+  font-size: calc(11.5px * var(--fs)); font-weight: 700; color: var(--ink-soft);
+  line-height: 1.2; text-transform: none;
+}
+.gh--corner { border: 0; }
+.gh--day { flex-direction: column; gap: 0; justify-content: center; border-radius: var(--r-s); }
+.gh--day b { font-size: calc(12px * var(--fs)); }
+.gh--day span { font-family: var(--display); font-size: calc(15px * var(--fs)); }
+.gh--day.is-today { background: var(--ink); color: #fff; }
+.gc {
+  display: flex; flex-direction: column; gap: 2px; width: 100%; text-align: left;
+  background: var(--card); border: 1px solid var(--line); border-left-width: 3px;
+  border-radius: var(--r); padding: 7px 8px; font-family: inherit; color: var(--ink);
+  min-height: calc(58px * var(--fs)); cursor: pointer;
+}
+.gc--off { background: transparent; border: 1px dashed var(--line-soft); border-left-width: 1px; cursor: default; }
+.gc.is-today { border-color: var(--ink); }
+.gc.is-future { opacity: .78; }
+.gc.is-swap { border-left-color: var(--eat); }
+.gc__m { font-size: calc(10.5px * var(--fs)); color: var(--ink-mute); line-height: 1.2; }
+.gc__t { font-size: calc(12.5px * var(--fs)); font-weight: 600; line-height: 1.25; }
+.gc__was { font-size: calc(10.5px * var(--fs)); color: var(--ink-mute); font-style: italic; line-height: 1.25; }
+.gc__st { font-size: calc(10.5px * var(--fs)); color: var(--ink-mute); margin-top: auto; }
+
 @media print {
   .tabs, .top, .btn, .tri, .dots, .stepper { display: none !important; }
   .page { display: block !important; }
@@ -580,6 +618,16 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
 
 <div class="toast" id="toast"></div>
 
+<div class="grid" id="grid">
+  <div class="grid__t">
+    <h2 id="grid-title"></h2>
+    <button class="btn btn--s btn--ghost" data-grid-rot="1" aria-label="Girar el cuadrante">⇅</button>
+    <button class="btn btn--s btn--ghost" data-grid-png="1" aria-label="Guardar el cuadrante como imagen">Imagen</button>
+    <button class="btn btn--s" data-grid-close="1">Cerrar</button>
+  </div>
+  <div class="grid__s" id="grid-scroll"></div>
+</div>
+
 <div class="sheet" id="sheet">
   <div class="sheet__bg" data-close="1"></div>
   <div class="sheet__c">
@@ -596,9 +644,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
     "user_code": "p-4f2a9",
     "mode": "comidas",
     "status": "propuesto",
-    "plan_version": 3,
+    "plan_version": 4,
     "start_date": "2026-09-28",
-    "weeks": 5,
+    "weeks": 6,
     "timezone": "Europe/Madrid",
     "theme_color": "#2f6f5e",
     "coach_contact": "Tu interlocutor humano es quien te ha entregado este enlace. Para cualquier duda del plan, ese es el canal."
@@ -609,14 +657,14 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
     "measurements": {
       "height_cm": 178,
       "weight_kg": 84.0,
-      "waist_cm": 96,
-      "hip_cm": 101,
-      "measured_at": "2026-10-09"
+      "waist_cm": 94,
+      "hip_cm": 106,
+      "measured_at": "2026-10-17"
     },
     "experience": "retomando",
     "activity_baseline": {
       "job": "sedentario",
-      "daily_steps": 3800
+      "daily_steps": 2900
     },
     "equipment": [
       "gimnasio"
@@ -683,7 +731,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
       "pizza",
       "gyozas",
       "sándwich de salmón",
-      "palomitas"
+      "palomitas",
+      "sepia"
     ],
     "cooking": {
       "skill": "basica",
@@ -694,7 +743,7 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
       "budget": "sin_limite"
     },
     "habits": {
-      "sleep_hours": 7,
+      "sleep_hours": 7.2,
       "alcohol": "ocasional",
       "smoking": false,
       "stress_1_5": 1,
@@ -704,37 +753,41 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
   "objectives": {
     "main": "Tres comidas al día que se resuelven en quince minutos o menos, sin depender de cocinar el fin de semana, con proteína y verdura en comida y cena.",
     "secondary": [
-      "Sostener las siete horas de sueño: la semana pasada subieron de seis a siete y la energía lo notó.",
-      "Mantener el almuerzo de las once con su proteína, que esta semana ha salido los cinco días.",
-      "Que la barriga descienda en tendencia de varias semanas, no de un viernes a otro.",
-      "Llegar al viaje de junio con margen de sobra."
+      "Levantar los pasos de 2.900 a 4.000 de media, que es la única palanca que queda sin usar y no quita comida de ningún sitio.",
+      "Sostener las siete horas de sueño, que llevan tres semanas firmes y se notan en la energía.",
+      "Tener una referencia estable de cintura, para que la medida de cada viernes signifique algo."
     ],
     "why": "Perder cinco o siete kilos de cara al viaje a los Dolomitas de junio.",
     "success_metrics": [
       {
         "metric": "Comidas cumplidas de los días vividos",
-        "target": "Sostener el 90 % que salió esta semana",
-        "horizon_weeks": 3
+        "target": "Sostener el 90 %, que lleva dos semanas cumpliéndose",
+        "horizon_weeks": 4
+      },
+      {
+        "metric": "Pasos diarios",
+        "target": "Subir de los 2.900 de esta semana a 4.000 de media",
+        "horizon_weeks": 4
       },
       {
         "metric": "Sueño",
         "target": "Media semanal por encima de las 7 horas",
-        "horizon_weeks": 3
+        "horizon_weeks": 4
       },
       {
         "metric": "Energía diaria",
-        "target": "Sostener el 3 de media, con algún 4",
-        "horizon_weeks": 3
+        "target": "Sostener el 3,5 de media",
+        "horizon_weeks": 4
       },
       {
         "metric": "Perímetro de barriga",
-        "target": "Tendencia descendente desde los 96 cm",
+        "target": "Tendencia descendente, medida siempre en el mismo sitio: a la altura del ombligo, de pie, después de soltar el aire sin forzar, con la cinta paralela al suelo y sin apretar",
         "horizon_weeks": 10
       },
       {
         "metric": "Peso",
-        "target": "Entre 0,3 y 0,5 kg por semana de media mensual, nunca más",
-        "horizon_weeks": 22
+        "target": "Entre 0,3 y 0,5 kg por semana de media mensual, nunca por semana aislada",
+        "horizon_weeks": 10
       }
     ],
     "not_goals": [
@@ -890,20 +943,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
       {
         "id": "media-manana",
         "name": "Media mañana",
-        "time_hint": "11:00, en el trabajo",
+        "time_hint": "11:00, lunes y viernes, con algo preparado de casa",
         "options": [
-          {
-            "id": "mm-fruta-proteina",
-            "title": "Fruta con queso fresco y tortitas de arroz",
-            "description": "La versión para los días de prisa, que son casi todos. Cero cocina, cabe en una bolsa y resuelve en un minuto lo que la fruta sola deja a medias: la proteína. Un taco de queso fresco o tres lonchas de pavo, dos tortitas de arroz y la fruta de siempre.",
-            "rations": {
-              "cereal": 1,
-              "proteina": 1,
-              "fruta": 1
-            },
-            "prep_min": 1,
-            "kcal": 330
-          },
           {
             "id": "mm-tostada-atun",
             "title": "Tostada de tomate y atún, con fruta",
@@ -929,6 +970,18 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
             "kcal": 400
           },
           {
+            "id": "mm-tortilla-pan",
+            "title": "Tortilla francesa de dos huevos en pan",
+            "description": "Hecha mientras se cena la noche anterior, se conserva perfectamente. Con fruta al lado.",
+            "rations": {
+              "cereal": 1,
+              "proteina": 1,
+              "fruta": 1
+            },
+            "prep_min": 7,
+            "kcal": 370
+          },
+          {
             "id": "mm-fuet-fruta",
             "title": "Fuet con un par de picos y fruta",
             "description": "El recurso de cuando no hay nada preparado. Unas rodajas de fuet, dos picos y la fruta.",
@@ -941,16 +994,53 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
             "kcal": 380
           },
           {
-            "id": "mm-tortilla-pan",
-            "title": "Tortilla francesa de dos huevos en pan",
-            "description": "Hecha mientras se cena la noche anterior, se conserva perfectamente. Con fruta al lado.",
+            "id": "mm-fruta-proteina",
+            "title": "Fruta con queso fresco y tortitas de arroz",
+            "description": "La versión para los días de prisa, que son casi todos. Cero cocina, cabe en una bolsa y resuelve en un minuto lo que la fruta sola deja a medias: la proteína. Un taco de queso fresco o tres lonchas de pavo, dos tortitas de arroz y la fruta de siempre.",
             "rations": {
               "cereal": 1,
               "proteina": 1,
               "fruta": 1
             },
-            "prep_min": 7,
-            "kcal": 370
+            "prep_min": 1,
+            "kcal": 330
+          }
+        ]
+      },
+      {
+        "id": "media-manana-fruta",
+        "name": "Media mañana",
+        "time_hint": "11:00, de martes a jueves, solo lo que quepa en la mochila",
+        "options": [
+          {
+            "id": "mmf-dos-piezas",
+            "title": "Dos piezas de fruta",
+            "description": "Lo que de verdad pasa de martes a jueves, puesto en el plan en lugar de disimulado. Dos piezas, no una: un plátano y una manzana, dos peras, una naranja y un plátano. Meter dos en la mochila cuesta lo mismo que meter una, y es la diferencia entre llegar a las tres con hambre normal o con hambre de las que arrasan. Con una sola pieza el día sigue cuadrando, aunque justo.",
+            "rations": {
+              "fruta": 2
+            },
+            "prep_min": 0,
+            "kcal": 180
+          },
+          {
+            "id": "mmf-fruta-cortada",
+            "title": "Un táper de fruta cortada",
+            "description": "La misma fruta, cortada la noche antes y en un táper: manzana, pera, plátano, lo que haya. Dura perfectamente hasta las once si va con unas gotas de limón por encima. Para los días en que una pieza entera da pereza, que es casi siempre a media mañana delante del ordenador.",
+            "rations": {
+              "fruta": 2
+            },
+            "prep_min": 4,
+            "kcal": 180
+          },
+          {
+            "id": "mmf-pieza-punado",
+            "title": "Una pieza y un puñado",
+            "description": "Una pieza grande, un plátano o una manzana, más un puñado de mandarinas, uvas o fresas, según la temporada. Si lo que apetece es ir picando en vez de comerse algo de un tirón, esta es la versión que mejor aguanta una mañana larga.",
+            "rations": {
+              "fruta": 2
+            },
+            "prep_min": 1,
+            "kcal": 185
           }
         ]
       },
@@ -1039,6 +1129,66 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
             "recipe_id": "salsa-verde-casera"
           },
           {
+            "id": "com-sepia-plancha",
+            "title": "Sepia a la plancha con tu salsa verde y patata",
+            "description": "La sepia que pediste. Se pide limpia y sin cortar en la pescadería, se marca en la sartén bien caliente con un peso encima para que toque toda la superficie, y se le pone tu salsa verde al darle la vuelta: es exactamente el mismo majado de ajo y perejil con aceite que ya haces. Patata al microondas y ensalada de tomate. Seis minutos de sartén y está.",
+            "rations": {
+              "proteina": 3,
+              "cereal": 1,
+              "verdura": 2,
+              "grasa": 1,
+              "fruta": 1
+            },
+            "prep_min": 16,
+            "kcal": 790,
+            "recipe_id": "sepia-plancha"
+          },
+          {
+            "id": "com-pollo-horno-panadera",
+            "title": "Pollo al horno con cebolla y patata panadera",
+            "description": "El plato de domingo que deja comida hecha para el lunes. Todo en una bandeja: patata en rodajas finas, cebolla en juliana, los muslos o la pechuga encima, aceite y sal. Cuarenta minutos de horno en los que no hay nada que hacer. Ensalada al lado y fruta.",
+            "rations": {
+              "proteina": 3,
+              "cereal": 1,
+              "verdura": 2,
+              "grasa": 1,
+              "fruta": 1
+            },
+            "prep_min": 50,
+            "kcal": 820,
+            "recipe_id": "pollo-horno-panadera"
+          },
+          {
+            "id": "com-merluza-horno",
+            "title": "Merluza al horno con tomate y cebolla",
+            "description": "Los lomos sobre una cama de tomate en rodajas y cebolla, aceite, sal y veinte minutos de horno. Sale jugosa sin vigilarla y la verdura se hace con el jugo del pescado, así que es un plato entero en una sola bandeja. Un poco de pan para el fondo y fruta.",
+            "rations": {
+              "proteina": 3,
+              "cereal": 1,
+              "verdura": 2,
+              "grasa": 1,
+              "fruta": 1
+            },
+            "prep_min": 28,
+            "kcal": 740,
+            "recipe_id": "merluza-horno-tomate"
+          },
+          {
+            "id": "com-albondigas-arroz",
+            "title": "Albóndigas en salsa de tomate con arroz",
+            "description": "Carne picada con un huevo, ajo y perejil, bolas del tamaño de una nuez y a la salsa de tomate que ya tienes de base. Salen de sobra para dos comidas y en la nevera están mejor al día siguiente. El arroz, blanco y al lado, no mezclado: así el táper no se empapa.",
+            "rations": {
+              "proteina": 2,
+              "cereal": 2,
+              "verdura": 2,
+              "grasa": 1,
+              "fruta": 1
+            },
+            "prep_min": 35,
+            "kcal": 860,
+            "recipe_id": "albondigas-tomate"
+          },
+          {
             "id": "com-arroz-pollo",
             "title": "Arroz con pollo y champiñones",
             "description": "El arroz se hace la noche antes mientras cenas y se calienta en tres minutos. El pollo y el champiñón, a la sartén en el momento. Ensalada de tomate y lechuga, y fruta de postre.",
@@ -1087,8 +1237,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
             "title": "Pescado a la plancha con salsa verde, patata y ensalada",
             "description": "Un lomo de merluza o de salmón, vuelta y vuelta, con tu salsa verde por encima al salir de la sartén, como lo haces siempre. La patata, en el microondas pinchada y envuelta: ocho minutos. Fruta de postre.",
             "rations": {
-              "proteina": 2,
-              "cereal": 2,
+              "proteina": 3,
+              "cereal": 1,
               "verdura": 2,
               "grasa": 1,
               "fruta": 1
@@ -1131,6 +1281,65 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
             "prep_min": 10,
             "kcal": 740,
             "recipe_id": "sandwich-salmon-aguacate"
+          },
+          {
+            "id": "cen-sepia-ensalada",
+            "title": "Sepia a la plancha con ensalada grande",
+            "description": "La misma sepia de la comida, en versión de noche: a la plancha con la salsa verde y una ensalada grande de tomate, lechuga y cebolla. Pan y un yogur. De las cenas más rápidas de la lista, porque la sepia se hace en seis minutos y no hay nada más que preparar.",
+            "rations": {
+              "proteina": 2,
+              "verdura": 2,
+              "cereal": 1,
+              "grasa": 1,
+              "lacteo": 1
+            },
+            "prep_min": 14,
+            "kcal": 690,
+            "recipe_id": "sepia-plancha"
+          },
+          {
+            "id": "cen-tortilla-patata",
+            "title": "Tortilla de patata y cebolla con tomate aliñado",
+            "description": "Una tortilla de dos o tres huevos con patata y cebolla, de las de toda la vida. La patata en rodajas finas se hace en el microondas en seis minutos y se ahorra la fritura entera, que es lo que convierte esta cena en algo de media hora o de un cuarto. Tomate aliñado al lado y yogur.",
+            "rations": {
+              "proteina": 2,
+              "verdura": 2,
+              "cereal": 1,
+              "grasa": 1,
+              "lacteo": 1
+            },
+            "prep_min": 18,
+            "kcal": 700,
+            "recipe_id": "tortilla-patata-cebolla"
+          },
+          {
+            "id": "cen-revuelto-champi-jamon",
+            "title": "Revuelto de champiñones con jamón y pan",
+            "description": "El champiñón laminado con ajo que ya está en la lista de lo que te gusta, salteado y con dos huevos encima removidos a fuego bajo. Tacos de jamón serrano al final, fuera del fuego. Pan tostado, ensalada de lechuga y un yogur. Doce minutos de principio a fin.",
+            "rations": {
+              "proteina": 2,
+              "verdura": 2,
+              "cereal": 1,
+              "grasa": 1,
+              "lacteo": 1
+            },
+            "prep_min": 12,
+            "kcal": 680,
+            "recipe_id": "revuelto-champi-jamon"
+          },
+          {
+            "id": "cen-lomo-tomate",
+            "title": "Lomo a la plancha con tomate aliñado y pan",
+            "description": "Dos filetes de lomo de cerdo, sal y sartén, tres minutos por lado. Tomate en rodajas con aceite, sal y orégano, pan y un yogur. Sin receta porque no la necesita: es la cena de los días en que no se quiere pensar, y entra entera en diez minutos.",
+            "rations": {
+              "proteina": 2,
+              "verdura": 2,
+              "cereal": 1,
+              "grasa": 1,
+              "lacteo": 1
+            },
+            "prep_min": 10,
+            "kcal": 670
           },
           {
             "id": "cen-gyozas",
@@ -1560,6 +1769,155 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
         "keeps_days": 1,
         "freezes": false,
         "notes": "El aguacate a punto se nota al presionar el cuello: si cede un poco, está."
+      },
+      {
+        "id": "sepia-plancha",
+        "title": "Sepia a la plancha, tierna",
+        "servings": 2,
+        "prep_min": 16,
+        "difficulty": "facil",
+        "keeps_days": 1,
+        "ingredients": [
+          "1 sepia mediana, unos 500 g, pedida limpia y SIN cortar en la pescadería",
+          "2 cucharadas de tu salsa verde de mortero",
+          "Sal gorda",
+          "Un cuarto de limón por persona"
+        ],
+        "steps": [
+          "La sepia, seca con papel de cocina. Es el paso que decide si queda dorada o cocida en su propio agua.",
+          "Los tentáculos se separan del cuerpo y se reservan: tardan menos y se queman si entran a la vez.",
+          "La sartén, a fuego fuerte y sin nada de aceite hasta que humee ligeramente.",
+          "El cuerpo entra abierto y plano. Encima, un papel de horno y una cacerola o un plato con algo de peso: así toca toda la superficie y se marca entera en vez de abarquillarse.",
+          "Tres minutos, y vuelta. Es el momento de pintarla con la salsa verde, no antes: el ajo se quema en segundos a ese fuego.",
+          "Otros tres minutos, los tentáculos y el limón al lado en la misma sartén, y fuera.",
+          "Sal gorda por encima al servir y el resto de la salsa verde en el plato."
+        ],
+        "notes": "Seis minutos de sartén, y de ahí no conviene pasarse: la sepia se endurece por exceso de fuego, no por falta. La ración de proteína de este plato es generosa, unos 250 g de sepia por persona, porque la sepia tiene en torno a 16 g de proteína por 100 g, menos que el pollo o la merluza. Es muy magra, menos de un gramo de grasa por 100 g, así que toda la grasa del plato viene de la salsa verde. Congelada va bien y además queda más tierna; fresca es mejor en los meses de invierno."
+      },
+      {
+        "id": "pollo-horno-panadera",
+        "title": "Pollo al horno con patata panadera",
+        "servings": 4,
+        "prep_min": 50,
+        "difficulty": "facil",
+        "keeps_days": 3,
+        "ingredients": [
+          "4 contramuslos de pollo con piel, o 2 pechugas enteras",
+          "4 patatas medianas",
+          "2 cebollas",
+          "4 cucharadas de aceite de oliva",
+          "Sal, pimentón y un poco de ajo picado",
+          "Medio vaso de agua o de caldo"
+        ],
+        "steps": [
+          "Horno a 200 grados, arriba y abajo. Se enciende antes de empezar a pelar.",
+          "Patata en rodajas de medio centímetro y cebolla en juliana, todo repartido en la bandeja con dos cucharadas de aceite y sal.",
+          "El pollo encima, con la piel hacia arriba, salado y con el pimentón y el ajo. El resto del aceite por encima.",
+          "Medio vaso de agua en el fondo de la bandeja, nunca sobre el pollo, para que la patata no se seque.",
+          "Cuarenta minutos sin tocar nada. Si al final se quiere la piel más dorada, cinco minutos de gratinador.",
+          "Reposar cinco minutos antes de servir y la ensalada se hace mientras."
+        ],
+        "notes": "Son cincuenta minutos de reloj pero solo diez de manos, y los otros cuarenta el horno trabaja solo. Por eso es plato de domingo o de sábado y no de martes. Sale para cuatro raciones, así que una comida de fin de semana deja otra hecha para el lunes: en la nevera aguanta tres días y recalentado en el horno o en la sartén está igual. En el microondas la patata pierde bastante."
+      },
+      {
+        "id": "merluza-horno-tomate",
+        "title": "Merluza al horno sobre tomate y cebolla",
+        "servings": 2,
+        "prep_min": 28,
+        "difficulty": "facil",
+        "keeps_days": 1,
+        "ingredients": [
+          "2 lomos de merluza gruesos, unos 180 g cada uno",
+          "3 tomates maduros",
+          "1 cebolla",
+          "2 cucharadas de aceite de oliva",
+          "Sal y un poco de perejil seco",
+          "Opcional: una patata en rodajas finas debajo"
+        ],
+        "steps": [
+          "Horno a 190 grados.",
+          "Tomate en rodajas y cebolla en juliana fina en el fondo de una fuente, con una cucharada de aceite y sal.",
+          "Diez minutos de horno solo con la verdura: es lo que hace que la cebolla no quede cruda cuando el pescado ya esté listo.",
+          "Los lomos encima, salados, con el resto del aceite y el perejil.",
+          "Doce minutos más. El pescado está cuando las láminas se separan al apretar con un tenedor.",
+          "El jugo del fondo, por encima al servir."
+        ],
+        "notes": "El reparto en dos tiempos es lo único que tiene truco: la merluza necesita doce minutos y la cebolla veinte, así que entran escalonadas. Con la patata debajo el plato ya trae su guarnición y no hace falta nada más. Sirve igual con bacalao fresco o con lomos de salmón, que pide dos o tres minutos menos."
+      },
+      {
+        "id": "albondigas-tomate",
+        "title": "Albóndigas en salsa de tomate",
+        "servings": 4,
+        "prep_min": 35,
+        "difficulty": "media",
+        "keeps_days": 3,
+        "ingredients": [
+          "500 g de carne picada mixta",
+          "1 huevo",
+          "2 dientes de ajo y perejil seco",
+          "2 cucharadas de pan rallado",
+          "Sal y pimienta",
+          "Harina para pasar las bolas",
+          "La salsa de tomate de base, unos 500 ml",
+          "3 cucharadas de aceite de oliva"
+        ],
+        "steps": [
+          "La carne, el huevo, el ajo muy picado, el perejil, el pan rallado y la sal, todo junto y mezclado con la mano hasta que ligue.",
+          "Reposar diez minutos en la nevera: así las bolas no se deshacen después.",
+          "Bolas del tamaño de una nuez, pasadas por harina y sacudidas para que suelten la que sobra.",
+          "Dorar en la sartén con el aceite, por tandas y sin llenarla, solo para sellar por fuera. Dentro quedan crudas, y está bien.",
+          "La salsa de tomate en una cazuela ancha, las albóndigas dentro y veinte minutos a fuego suave, moviendo la cazuela en vez de remover.",
+          "El arroz se cuece mientras, y se sirve al lado y no debajo."
+        ],
+        "notes": "Media hora larga y algo de trabajo de manos, así que encaja mejor un domingo que un martes. En cambio salen cuatro raciones y al día siguiente están claramente mejores, de modo que una tanda cubre dos comidas. En la nevera, tres días. Y congelan muy bien con su salsa, que es la forma de tener una comida hecha para la semana que venga torcida."
+      },
+      {
+        "id": "tortilla-patata-cebolla",
+        "title": "Tortilla de patata y cebolla sin fritura",
+        "servings": 2,
+        "prep_min": 18,
+        "difficulty": "media",
+        "keeps_days": 2,
+        "ingredients": [
+          "3 patatas medianas",
+          "1 cebolla",
+          "5 huevos",
+          "3 cucharadas de aceite de oliva",
+          "Sal"
+        ],
+        "steps": [
+          "Patata en rodajas finas y cebolla en juliana, en un bol con una cucharada de aceite y sal, tapado.",
+          "Microondas a máxima potencia, seis minutos, removiendo a la mitad. Sale tierna y sin freír medio litro de aceite.",
+          "Los huevos batidos con sal, y la patata caliente dentro. Reposar cinco minutos: es lo que hace que la tortilla sepa a tortilla y no a huevo con patata.",
+          "La sartén con el resto del aceite, a fuego medio. La mezcla dentro y se baja el fuego enseguida.",
+          "Cuatro minutos, un plato encima, vuelta, y otros tres. Si se quiere jugosa, dos."
+        ],
+        "notes": "El paso del microondas es lo que la mete en el cuarto de hora: la versión de freír la patata son cuarenta minutos y medio litro de aceite. La grasa de este plato es la que se ve, tres cucharadas para dos raciones. Aguanta dos días en la nevera y se come fría sin problema, así que media tortilla resuelve un almuerzo del día siguiente."
+      },
+      {
+        "id": "revuelto-champi-jamon",
+        "title": "Revuelto de champiñones con jamón",
+        "servings": 2,
+        "prep_min": 12,
+        "difficulty": "facil",
+        "keeps_days": 1,
+        "ingredients": [
+          "2 bandejas de champiñón laminado",
+          "2 dientes de ajo",
+          "4 huevos",
+          "1 taco de jamón serrano en dados, unos 80 g",
+          "2 cucharadas de aceite de oliva",
+          "Sal y perejil seco"
+        ],
+        "steps": [
+          "El ajo picado en la sartén con el aceite, a fuego medio, medio minuto y sin que se dore.",
+          "El champiñón, a fuego fuerte y sin sal al principio: la sal le hace soltar agua y entonces cuece en vez de dorarse.",
+          "Cuando ha perdido el agua y empieza a dorarse, sal y perejil.",
+          "Fuego al mínimo, los huevos batidos por encima y removiendo despacio hasta que cuajen a medias. Un revuelto se retira cuando aún parece poco hecho.",
+          "El jamón al final y fuera del fuego, para que no se seque ni se ponga salado.",
+          "El pan, tostado mientras cuaja el huevo."
+        ],
+        "notes": "Doce minutos reales, de los más rápidos del plan. El jamón ya trae bastante sal, así que conviene ir corto con la del huevo. Con dos huevos por persona y el jamón, la proteína de la cena está cubierta sin nada más."
       }
     ],
     "batch_cooking": {
@@ -1782,32 +2140,173 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           {
             "name": "Fresco",
             "items": [
+              "17 piezas de fruta para la semana: cuenta 2 para los almuerzos del lunes y el viernes, 6 para los de martes a jueves (dos por día) y el resto para los postres",
+              "1 bolsa de manzanas",
+              "4 plátanos",
+              "1 bolsa de mandarinas",
+              "2 peras",
               "6 tomates maduros",
               "2 lechugas",
               "3 cebollas",
-              "1 manojo de cebolleta",
-              "1 pimiento rojo",
+              "1 manojo de perejil fresco (opcional)",
+              "2 berenjenas grandes",
+              "4 patatas",
               "2 bandejas de champiñón laminado",
-              "1 manojo de perejil",
-              "2 aguacates",
-              "1 bolsa de manzanas",
-              "2 granadas",
-              "4 plátanos",
-              "1 bolsa de mandarinas tempranas",
-              "1 limón, para el aguacate del desayuno",
               "1 bandeja de tomate cherry",
-              "2 zanahorias"
+              "2 zanahorias",
+              "1 aguacate",
+              "1 limón"
             ]
           },
           {
             "name": "Carnicería y pescadería",
             "items": [
-              "2 pechugas de pollo enteras",
-              "2 lomos de merluza",
+              "1 sepia mediana, limpia y sin cortar (unos 500 g): sirve para la comida del martes y la cena del sábado",
+              "2 lomos de merluza gruesos",
+              "2 lomos de pescado para el jueves (merluza o salmón)",
+              "4 contramuslos de pollo con piel",
+              "300 g de carne picada mixta",
+              "4 filetes de lomo de cerdo",
               "1 taco de jamón serrano",
-              "1 fuet",
-              "120 g de salmón ahumado",
-              "1 bandeja de langostinos"
+              "120 g de salmón ahumado"
+            ]
+          },
+          {
+            "name": "Despensa",
+            "items": [
+              "2 botes grandes de lentejas cocidas",
+              "1 bandeja de pasta fresca",
+              "1 bote grande de tomate triturado",
+              "1 docena y media de huevos",
+              "Pan de molde y una barra",
+              "Picos o pan tostado",
+              "1 bote de aceitunas",
+              "Maíz para palomitas",
+              "Queso curado en taco",
+              "Queso rallado",
+              "2 latas de atún"
+            ]
+          },
+          {
+            "name": "Lácteos",
+            "items": [
+              "1 pack de yogures naturales",
+              "Leche desnatada",
+              "1 tarrina de queso fresco"
+            ]
+          },
+          {
+            "name": "Congelado",
+            "items": [
+              "1 bolsa de gyozas",
+              "1 bolsa de verdura para salteado"
+            ]
+          }
+        ]
+      },
+      {
+        "week": 5,
+        "sections": [
+          {
+            "name": "Fresco",
+            "items": [
+              "17 piezas de fruta para la semana: cuenta 2 para los almuerzos del lunes y el viernes, 6 para los de martes a jueves (dos por día) y el resto para los postres",
+              "1 bolsa de manzanas",
+              "4 plátanos",
+              "1 bolsa de mandarinas",
+              "2 peras",
+              "6 tomates maduros",
+              "2 lechugas",
+              "3 cebollas",
+              "1 manojo de perejil fresco (opcional)",
+              "5 patatas",
+              "2 bandejas de champiñón laminado",
+              "1 bote de alcachofas",
+              "2 aguacates",
+              "1 limón",
+              "1 pimiento rojo (solo para dar sabor al sofrito)"
+            ]
+          },
+          {
+            "name": "Carnicería y pescadería",
+            "items": [
+              "1 sepia mediana, limpia y sin cortar",
+              "2 lomos de merluza gruesos",
+              "2 lomos de pescado para el jueves",
+              "2 pechugas de pollo enteras",
+              "500 g de carne picada mixta",
+              "1 taco de jamón serrano",
+              "250 g de carne picada de vacuno para las hamburguesas",
+              "120 g de salmón ahumado"
+            ]
+          },
+          {
+            "name": "Despensa",
+            "items": [
+              "2 botes grandes de lentejas cocidas",
+              "1 paquete de arroz redondo",
+              "1 paquete de pasta corta",
+              "2 botes grandes de tomate triturado",
+              "1 docena y media de huevos",
+              "Pan rallado",
+              "Harina",
+              "Pan de molde y una barra",
+              "Cereales de desayuno",
+              "Queso rallado",
+              "3 latas de atún"
+            ]
+          },
+          {
+            "name": "Lácteos",
+            "items": [
+              "1 pack de yogures naturales",
+              "Leche desnatada",
+              "Queso en lonchas"
+            ]
+          },
+          {
+            "name": "Congelado",
+            "items": [
+              "1 bolsa de verdura para salteado"
+            ]
+          }
+        ]
+      },
+      {
+        "week": 6,
+        "sections": [
+          {
+            "name": "Fresco",
+            "items": [
+              "17 piezas de fruta para la semana: cuenta 2 para los almuerzos del lunes y el viernes, 6 para los de martes a jueves (dos por día) y el resto para los postres",
+              "1 bolsa de manzanas",
+              "4 plátanos",
+              "1 bolsa de mandarinas",
+              "2 peras",
+              "6 tomates maduros",
+              "2 lechugas",
+              "3 cebollas",
+              "1 manojo de perejil fresco (opcional)",
+              "5 patatas",
+              "2 bandejas de champiñón laminado",
+              "1 brócoli",
+              "2 berenjenas grandes",
+              "1 bandeja de tomate cherry",
+              "2 zanahorias",
+              "1 limón"
+            ]
+          },
+          {
+            "name": "Carnicería y pescadería",
+            "items": [
+              "1 sepia mediana, limpia y sin cortar",
+              "2 lomos de merluza gruesos",
+              "2 lomos de pescado para el martes",
+              "4 contramuslos de pollo con piel",
+              "500 g de carne picada mixta",
+              "4 filetes de lomo de cerdo",
+              "1 taco de jamón serrano",
+              "1 fuet"
             ]
           },
           {
@@ -1816,108 +2315,36 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
               "1 bandeja de pasta fresca",
               "1 paquete de arroz redondo",
               "2 botes grandes de tomate triturado",
-              "2 botes grandes de lentejas cocidas",
-              "4 latas de atún al natural",
-              "1 hogaza de pan",
-              "1 paquete de pan de molde bueno",
-              "1 paquete de tortitas de arroz",
-              "1 bolsa de nueces",
-              "1 bote de perejil seco",
-              "1 paquete de maíz para palomitas",
-              "1 bote de aceitunas"
-            ]
-          },
-          {
-            "name": "Congelado",
-            "items": [
-              "1 bolsa de brócoli en ramitos",
-              "1 bolsa de corazones de alcachofa"
+              "1 docena y media de huevos",
+              "Pan rallado",
+              "Harina",
+              "Pan de molde y una barra",
+              "Picos o pan tostado",
+              "Maíz para palomitas",
+              "1 bote de aceitunas",
+              "Queso curado en taco",
+              "Cereales de desayuno",
+              "Queso rallado"
             ]
           },
           {
             "name": "Lácteos",
             "items": [
-              "2 briks de leche desnatada",
-              "1 pack de yogur natural",
-              "1 cuña de queso curado",
-              "1 tarrina de queso fresco",
-              "1 bolsa de queso rallado"
-            ]
-          }
-        ],
-        "estimated_cost": "Orientativo: entre 70 y 90 € semanales para dos personas. Sin verificar con precios actuales."
-      },
-      {
-        "week": 5,
-        "sections": [
-          {
-            "name": "Fresco",
-            "items": [
-              "6 tomates maduros",
-              "1 lechuga y una bolsa de brotes",
-              "3 cebollas",
-              "1 pimiento rojo",
-              "2 bandejas de champiñón laminado",
-              "1 manojo de perejil",
-              "1 aguacate",
-              "1 bolsa de peras",
-              "1 bolsa de mandarinas",
-              "4 plátanos",
-              "1 caqui",
-              "1 limón, para el aguacate del desayuno",
-              "1 bandeja de tomate cherry",
-              "2 zanahorias"
-            ]
-          },
-          {
-            "name": "Carnicería y pescadería",
-            "items": [
-              "2 pechugas de pollo enteras",
-              "300 g de carne picada de ternera",
-              "2 lomos de dorada o lubina",
-              "1 taco de jamón serrano",
-              "1 fuet",
-              "120 g de salmón ahumado"
-            ]
-          },
-          {
-            "name": "Despensa",
-            "items": [
-              "1 bandeja de pasta fresca",
-              "1 paquete de pasta",
-              "2 botes grandes de tomate triturado",
-              "4 latas de atún al natural",
-              "1 hogaza de pan",
-              "1 paquete de pan de molde bueno",
-              "1 paquete de tortitas de arroz",
-              "1 bolsa de nueces",
-              "1 bolsa de patatas",
-              "1 botella de aceite de oliva virgen extra",
-              "1 bote de perejil seco",
-              "1 paquete de maíz para palomitas",
-              "1 bote de aceitunas"
+              "1 pack de yogures naturales",
+              "Leche desnatada"
             ]
           },
           {
             "name": "Congelado",
             "items": [
-              "1 bolsa de corazones de alcachofa"
-            ]
-          },
-          {
-            "name": "Lácteos",
-            "items": [
-              "2 briks de leche desnatada",
-              "1 pack de yogur natural",
-              "1 cuña de queso curado",
-              "1 tarrina de queso fresco"
+              "1 bolsa de gyozas",
+              "1 bolsa de verdura para salteado"
             ]
           }
-        ],
-        "estimated_cost": "Orientativo: entre 70 y 90 € semanales para dos personas. Sin verificar con precios actuales."
+        ]
       }
     ],
-    "flexibility": "Cumplir cuatro o cinco días de cada siete es un plan cumplido. La semana pasada salieron catorce comidas de quince en los días que ya habían pasado, que es más de lo que pide el plan.\n\nLa legumbre y el cereal comparten el mismo hueco del día: los días de lentejas, el arroz o la pasta no hacen falta, y el recuento cuadra igual.\n\nNingún alimento está prohibido aquí. La pizza, el queso, la hamburguesa, las palomitas y las tres o cuatro cervezas de la semana están dentro, no al margen.\n\nUna noche de peli tampoco es un problema, y ahora tiene su propia cena en la lista. Lo que deja el día corto no es picar en el sofá: es cambiar la cena por un bol de palomitas y nada más. Con el queso y el jamón al lado, esa misma noche cuenta como cena cumplida.\n\nY lo más importante: una comida fuera del plan no se arrastra. No se salta la siguiente, no se recorta el día siguiente y no se hace nada para equilibrarlo. Se retoma la comida que tocaba y ya está.\n\nSi un día aparece hambre de verdad, la respuesta correcta es una ración más de proteína o de verdura, no aguantar. El plan está calculado con esas raciones puestas.\n\nEl ciclo de la semana: el viernes se cierra el registro y se manda, el sábado toca supermercado con la lista ya actualizada, y el domingo no hay nada que cocinar. La semana del panel arranca el lunes, pero las decisiones se toman el viernes anterior, que es cuando todavía sirven de algo.",
+    "flexibility": "Cumplir cuatro o cinco días de cada siete es un plan cumplido. La semana pasada salieron las quince comidas de los quince días vividos, que es más de lo que pide el plan.\n\nEl almuerzo de media mañana va ahora como es de verdad: completo el lunes y el viernes, que son los días en que sí se prepara algo, y dos piezas de fruta de martes a jueves. Dos y no una, porque meter dos en la mochila cuesta lo mismo. Con una sola el día sigue cuadrando, aunque justo.\n\nY de ahí sale la única regla nueva que merece saberse: los días de solo fruta, la comida conviene que sea de las que llevan pescado, carne o huevo de plato principal. En el selector de cada comida salen las raciones de cada opción, y las de esos días son las que marcan tres de proteína. Con un plato de pasta el día se queda corto de proteína, que es justo lo que no interesa perder mientras baja el peso. Las lentejas y el menú del día encajan mejor el lunes, el viernes o el fin de semana.\n\nLa legumbre y el cereal comparten el mismo hueco del día: los días de lentejas, el arroz o la pasta no hacen falta, y el recuento cuadra igual.\n\nHay cuatro comidas y cuatro cenas más que la semana pasada, y están todas en Comer. El cuadrante de la pestaña Semana sirve justo para esto: se abre, se ve la semana entera de un vistazo y se cambia lo que no apetezca tocando la casilla, también en los días que aún no han llegado.\n\nNingún alimento está prohibido aquí. La pizza, el queso, la hamburguesa, las palomitas y las tres o cuatro cervezas de la semana están dentro, no al margen.\n\nY lo más importante: una comida fuera del plan no se arrastra. No se salta la siguiente, no se recorta el día siguiente y no se hace nada para equilibrarla. Se sigue con lo que venía, y ya está.",
     "eating_out": "En la primera semana salieron dos comidas fuera entre semana más el fin de semana entero. El plan propone sostener dos o tres por semana, que es lo que ya estás haciendo y bastante menos que las cuatro o cinco de partida.\n\nCriterios para las que toquen, sin dramatismos:\n· Pizza: una individual entera o media grande, con ensalada de entrante para llegar con menos hambre. Las de masa fina cunden más por menos.\n· Kebab: el de plato con ensalada gana por goleada al rulo, y permite dejar parte del pan.\n· Chino: arroz blanco o tallarines con un plato de carne o de pescado, dejando los rebozados y el pato crujiente para otro día.\n· Hindú: los platos en salsa con arroz funcionan bien; el naan es donde se va la mitad de la comida sin enterarse.\n· Americana: la hamburguesa está bien; la diferencia la marcan la guarnición y la bebida.\n· Merendero: carne o pescado a la plancha y ensalada es probablemente la opción más fácil de todas.\n\nUn fin de semana entero fuera, como el de ahora, tiene su propia regla y es más sencilla: en cada comida, algo de proteína y algo de verdura en el plato, y el resto da bastante igual. Dos días no mueven una tendencia de veinticuatro semanas. Lo que sí la movería es volver el lunes con la idea de recuperar lo perdido: eso no se hace.\n\nEn cualquier caso: pan antes de que llegue la comida, poco; bebida, agua o una cerveza; y postre, fruta si apetece.",
     "supplements": [
       {
@@ -1939,7 +2366,7 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
       "week": 1,
       "focus": "Semana cerrada: la de prueba",
       "deload": false,
-      "notes": "Semana ya pasada y cerrada. Catorce comidas cumplidas de quince en los días vividos, y un fin de semana fuera de casa. La semana se queda aquí a la vista para completar lo que quedó sin marcar: cualquier día se abre con un toque.",
+      "notes": "Semana ya pasada y cerrada. Trece comidas cumplidas de quince en los días vividos, y un fin de semana fuera de casa. Se queda aquí a la vista para completar lo que quedó sin marcar: cualquier día se abre con un toque.",
       "days": [
         {
           "date": "2026-09-28",
@@ -2017,7 +2444,7 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
       "week": 2,
       "focus": "Semana cerrada: el sistema nuevo",
       "deload": false,
-      "notes": "El sistema de los quince minutos funcionó: catorce comidas de quince, el almuerzo de las once cumplido los cinco días y el sueño de vuelta en las siete horas. La única cena que falló fue la del viernes, cambiada por palomitas delante de una peli. De ahí sale la cena nueva de la semana que viene.",
+      "notes": "El sistema de los quince minutos funcionó: catorce comidas de quince y el sueño de vuelta en las siete horas. La única cena que falló fue la del viernes, cambiada por palomitas delante de una peli. De ahí salió la tabla de picoteo.",
       "days": [
         {
           "date": "2026-10-05",
@@ -2093,9 +2520,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
     },
     {
       "week": 3,
-      "focus": "La cena del viernes, resuelta",
+      "focus": "Semana cerrada: todo cumplido",
       "deload": false,
-      "notes": "Nada cambia del sistema, que está funcionando. Entra la tabla de picoteo para el viernes de peli, y la salsa verde pasa a ser la tuya de mortero, también con el pescado. El resto es repetir lo que ya sale.",
+      "notes": "Quince de quince, la primera semana entera sin un hueco. También la semana en que quedó claro que el almuerzo de martes a jueves es fruta y nada más, y que el plan llevaba tres semanas contando dos raciones que no se comían. De ahí sale el cambio de esta versión.",
       "days": [
         {
           "date": "2026-10-12",
@@ -2171,9 +2598,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
     },
     {
       "week": 4,
-      "focus": "Primera lectura de tendencia",
+      "focus": "El almuerzo, como es de verdad",
       "deload": false,
-      "notes": "Cuarta semana desde el arranque, que es cuando la barriga y el peso empiezan a decir algo. Hasta aquí los números eran ruido; de este viernes en adelante ya hay línea que leer, y es entonces cuando tiene sentido tocar las cantidades si hace falta.",
+      "notes": "Primera semana con el hueco de las once contado como lo que es: completo el lunes y el viernes, fruta de martes a jueves. Lo que se quita de ahí se recoloca en la comida, que esos tres días pasa a ser de plato de proteína. Y entra la sepia.",
       "days": [
         {
           "date": "2026-10-19",
@@ -2190,9 +2617,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "martes",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-fruta-proteina",
-            "comida": "com-lentejas",
-            "cena": "cen-sandwich-salmon"
+            "media-manana-fruta": "mmf-dos-piezas",
+            "comida": "com-sepia-plancha",
+            "cena": "cen-tortilla-patata"
           }
         },
         {
@@ -2200,9 +2627,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "miércoles",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-tortilla-pan",
-            "comida": "com-pasta-verde",
-            "cena": "cen-pescado-ensalada"
+            "media-manana-fruta": "mmf-fruta-cortada",
+            "comida": "com-merluza-horno",
+            "cena": "cen-revuelto-champi-jamon"
           }
         },
         {
@@ -2210,8 +2637,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "jueves",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-fruta-proteina",
-            "comida": "com-arroz-pollo",
+            "media-manana-fruta": "mmf-pieza-punado",
+            "comida": "com-pescado-patata",
             "cena": "cen-gyozas"
           }
         },
@@ -2221,8 +2648,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "rest": true,
           "meal_plan": {
             "media-manana": "mm-bocadillo-jamon",
-            "comida": "com-arroz-pollo",
-            "cena": "cen-fuera"
+            "comida": "com-pasta-verde",
+            "cena": "cen-picoteo"
           }
         },
         {
@@ -2230,9 +2657,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "sábado",
           "rest": true,
           "meal_plan": {
-            "desayuno": "des-aguacate-salmon",
+            "desayuno": "des-revuelto-queso",
             "comida": "com-fuera-menu",
-            "cena": "cen-hamburguesa-casera"
+            "cena": "cen-sepia-ensalada"
           }
         },
         {
@@ -2240,27 +2667,27 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "domingo",
           "rest": true,
           "meal_plan": {
-            "desayuno": "des-cereales",
-            "comida": "com-pescado-patata",
-            "cena": "cen-tortilla-brocoli"
+            "desayuno": "des-aguacate-salmon",
+            "comida": "com-pollo-horno-panadera",
+            "cena": "cen-lomo-tomate"
           }
         }
       ]
     },
     {
       "week": 5,
-      "focus": "Consolidar, sin novedades",
-      "deload": true,
-      "notes": "Semana de consolidación deliberada: nada nuevo, solo lo que ya funciona. Menos recetas, más repetición y margen de sobra. Una semana así no es una semana perdida, es lo que hace que la sexta también salga.",
+      "focus": "Variedad, sin tocar el sistema",
+      "deload": false,
+      "notes": "Nada nuevo en la estructura: lo que cambia es la carta. Cuatro comidas y cuatro cenas más para elegir, de modo que una semana no se parezca a la anterior sin tener que pensar nada.",
       "days": [
         {
           "date": "2026-10-26",
           "weekday": "lunes",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-tostada-atun",
-            "comida": "com-pasta-verde",
-            "cena": "cen-sandwich-salmon"
+            "media-manana": "mm-tortilla-pan",
+            "comida": "com-arroz-pollo",
+            "cena": "cen-pescado-ensalada"
           }
         },
         {
@@ -2268,9 +2695,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "martes",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-fruta-proteina",
-            "comida": "com-arroz-pollo",
-            "cena": "cen-champinones-pollo"
+            "media-manana-fruta": "mmf-dos-piezas",
+            "comida": "com-merluza-horno",
+            "cena": "cen-sandwich-salmon"
           }
         },
         {
@@ -2278,9 +2705,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "miércoles",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-fuet-fruta",
-            "comida": "com-pasta-atun",
-            "cena": "cen-pescado-ensalada"
+            "media-manana-fruta": "mmf-pieza-punado",
+            "comida": "com-sepia-plancha",
+            "cena": "cen-champinones-pollo"
           }
         },
         {
@@ -2288,9 +2715,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "jueves",
           "rest": true,
           "meal_plan": {
-            "media-manana": "mm-fruta-proteina",
-            "comida": "com-lentejas",
-            "cena": "cen-alcachofa-huevo"
+            "media-manana-fruta": "mmf-fruta-cortada",
+            "comida": "com-pescado-patata",
+            "cena": "cen-tortilla-patata"
           }
         },
         {
@@ -2299,8 +2726,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "rest": true,
           "meal_plan": {
             "media-manana": "mm-bocadillo-jamon",
-            "comida": "com-pescado-patata",
-            "cena": "cen-picoteo"
+            "comida": "com-pasta-atun",
+            "cena": "cen-fuera"
           }
         },
         {
@@ -2308,9 +2735,9 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "weekday": "sábado",
           "rest": true,
           "meal_plan": {
-            "desayuno": "des-revuelto-queso",
-            "comida": "com-fuera-menu",
-            "cena": "cen-gyozas"
+            "desayuno": "des-cereales",
+            "comida": "com-albondigas-arroz",
+            "cena": "cen-hamburguesa-casera"
           }
         },
         {
@@ -2319,8 +2746,86 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
           "rest": true,
           "meal_plan": {
             "desayuno": "des-aguacate-salmon",
+            "comida": "com-lentejas",
+            "cena": "cen-alcachofa-huevo"
+          }
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "deload": true,
+      "focus": "Consolidar lo que funcione",
+      "notes": "Semana de consolidación: solo lo que a estas alturas ya salga solo, con margen de sobra y sin platos de más de veinte minutos entre semana. Una semana así no es una semana perdida, es lo que hace que la séptima también salga.",
+      "days": [
+        {
+          "date": "2026-11-02",
+          "weekday": "lunes",
+          "rest": true,
+          "meal_plan": {
+            "media-manana": "mm-tostada-atun",
+            "comida": "com-pollo-horno-panadera",
+            "cena": "cen-revuelto-champi-jamon"
+          }
+        },
+        {
+          "date": "2026-11-03",
+          "weekday": "martes",
+          "rest": true,
+          "meal_plan": {
+            "media-manana-fruta": "mmf-dos-piezas",
             "comida": "com-pescado-patata",
-            "cena": "cen-hamburguesa-casera"
+            "cena": "cen-gyozas"
+          }
+        },
+        {
+          "date": "2026-11-04",
+          "weekday": "miércoles",
+          "rest": true,
+          "meal_plan": {
+            "media-manana-fruta": "mmf-fruta-cortada",
+            "comida": "com-sepia-plancha",
+            "cena": "cen-tortilla-brocoli"
+          }
+        },
+        {
+          "date": "2026-11-05",
+          "weekday": "jueves",
+          "rest": true,
+          "meal_plan": {
+            "media-manana-fruta": "mmf-pieza-punado",
+            "comida": "com-merluza-horno",
+            "cena": "cen-lomo-tomate"
+          }
+        },
+        {
+          "date": "2026-11-06",
+          "weekday": "viernes",
+          "rest": true,
+          "meal_plan": {
+            "media-manana": "mm-fuet-fruta",
+            "comida": "com-pasta-verde",
+            "cena": "cen-picoteo"
+          }
+        },
+        {
+          "date": "2026-11-07",
+          "weekday": "sábado",
+          "rest": true,
+          "meal_plan": {
+            "desayuno": "des-revuelto-queso",
+            "comida": "com-fuera-menu",
+            "cena": "cen-sepia-ensalada"
+          }
+        },
+        {
+          "date": "2026-11-08",
+          "weekday": "domingo",
+          "rest": true,
+          "meal_plan": {
+            "desayuno": "des-cereales",
+            "comida": "com-albondigas-arroz",
+            "cena": "cen-berenjena-carne"
           }
         }
       ]
@@ -2343,7 +2848,8 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
     ],
     "weigh_days": [
       "viernes"
-    ]
+    ],
+    "notes": "La cadera pasa a control mensual: cuatro lecturas en cuatro semanas han dado 97, 101, 101 y 106 cm con el peso quieto, y eso no describe un cuerpo, describe la cinta puesta en sitios distintos. La cintura se queda como la medida semanal, siempre a la altura del ombligo y con la referencia escrita en los objetivos."
   },
   "achievements": [
     {
@@ -2406,16 +2912,12 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
   "safety": {
     "disclaimer": "Esto no es asesoramiento médico ni dietético profesional. Quien lo ha elaborado no es médico, ni dietista-nutricionista colegiado, ni fisioterapeuta: es una herramienta que ordena información y la explica. El plan no diagnostica nada, no trata ninguna enfermedad y no sustituye a una visita médica. Ante cualquier síntoma que aparezca o empeore, lo importante es acudir a un profesional sanitario. Con la inflamación de la planta del pie ya en seguimiento por traumatología, es ese seguimiento el que manda sobre cualquier cosa que aparezca aquí. Tu interlocutor humano es quien te ha entregado este enlace. En una urgencia, el 112.",
     "red_flags": [
-      "Saltarse una comida entera y sustituirla por algo de picar: el día se queda corto y suele notarse al día siguiente.",
-      "Quedarse corto a propósito en una comida: el plan está calculado con esas raciones puestas.",
-      "Energía cada vez más floja varios días seguidos.",
-      "Dormir menos de seis horas de forma sostenida mientras se intenta perder grasa.",
-      "Hambre sostenida durante varios días seguidos: es señal de plan mal calibrado, no de falta de fuerza de voluntad.",
-      "Ganas de saltarse comidas para acelerar el resultado.",
-      "Culpa después de una comida fuera del plan, o el impulso de equilibrarla al día siguiente.",
-      "Necesidad de subirse a la báscula a diario, o angustia con el número.",
-      "Pérdida de más de un kilo por semana de forma sostenida.",
-      "Ganas de eliminar grupos enteros de alimentos sin motivo médico."
+      "Comer menos de lo previsto varios días seguidos, sobre todo si empieza a pasar también en las comidas de casa.",
+      "Hablar de la comida en términos de compensar, de portarse bien o mal, o de haberse ganado algo.",
+      "Querer eliminar grupos enteros de alimentos sin que lo haya indicado un profesional.",
+      "Pesarse a diario con angustia, o darle vueltas al número entre un viernes y el siguiente.",
+      "Varias semanas seguidas de cumplimiento perfecto junto con energía baja y sueño corto: sostener la perfección no es una virtud, es una señal de que el plan aprieta demasiado.",
+      "Dolor articular, punzante o que irradia durante cualquier actividad."
     ],
     "injury_protocol": "Con la planta del pie todavía inflamada, este plan no propone ningún objetivo de pasos ambicioso ni actividad de impacto, y no lo hará hasta que el traumatólogo lo dé por resuelto. Si la molestia va a más, cambia de sitio o aparece por la mañana al apoyar, eso va al seguimiento que ya tienes abierto, no al panel. El plan no pone nombre a lo que tienes ni lo va a poner: describe lo que hace la alimentación, nada más. En el gimnasio, cualquier dolor articular, punzante o que irradie es motivo para parar ese ejercicio ese día. Y el botón de pausa de arriba está para usarlo sin dar explicaciones a nadie.",
     "stop_signs": [
@@ -2488,27 +2990,65 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
         "Adherencia corregida de 67 % a 93 % por el mismo motivo que la semana 1."
       ],
       "note": "El sistema de los quince minutos funcionó. Mejor semana hasta ahora en sueño, energía y cumplimiento."
+    },
+    {
+      "week_start": "2026-10-12",
+      "plan_version": 3,
+      "adherence": {
+        "training_pct": null,
+        "nutrition_pct": 100,
+        "sessions_done": 0
+      },
+      "measurements": {
+        "weight_kg": 84.0,
+        "waist_cm": 94,
+        "hip_cm": 106
+      },
+      "wellbeing": {
+        "sleep_avg": 7.2,
+        "energy_avg": 3.8,
+        "mood_avg": 3.0
+      },
+      "prs": [
+        "Primera semana entera sin un solo hueco: quince comidas de quince",
+        "Mejor media de energía del plan, 3,8 sobre 5",
+        "El agua sube de 5,2 a 6,8 vasos de media"
+      ],
+      "issues": [
+        "Las diez comidas y cenas de lunes a viernes se cambiaron a mano respecto a lo programado, y aun así se repitieron platos: tres comidas distintas en cinco días. De ahí sale la ampliación de la carta.",
+        "El almuerzo de martes a jueves es fruta y nada más: el plan contaba tres raciones donde se comían una. Dos raciones diarias por tres días, seis a la semana, que el sistema daba por comidas. Corregido en esta versión desdoblando el hueco.",
+        "Los pasos caen de 3.800 a 2.900 de media, un 24 % menos, con el objetivo en 4.500. Es la palanca que explica mejor el peso plano y la única que no quita comida de ningún sitio.",
+        "Tercera y cuarta semana de peso plano: 84,1 → 83,5 → 84,0 → 84,0.",
+        "Las dos medidas del viernes no son fiables: la cintura baja 2 cm y la cadera sube 5 el mismo día, con el peso quieto. La cadera lleva cuatro lecturas sin sentido (97, 101, 101, 106) y pasa a control mensual.",
+        "Adherencia informada por el panel: 83 %. La real de los días registrados: 100 %. El cálculo metía el día en curso completo en el denominador, con sus tres comidas sin registrar, porque el envío se hizo el sábado por la mañana. Corregido en esta versión.",
+        "Dos cenas fuera de casa, martes y viernes, más la comida del sábado: tres en la semana, frente a las cuatro o cinco que declaró al empezar."
+      ],
+      "note": "La mejor semana en cumplimiento y la que más ha enseñado: el 100 % convivía con seis raciones semanales que el plan daba por comidas y no se comían. El sistema medía de más, no el usuario de menos."
     }
   ],
   "generation_metadata": {
-    "generated_at": "2026-10-09",
+    "generated_at": "2026-10-17",
     "schema_version": "1.0",
     "claude_model": "claude-opus-5",
-    "web_search_count": 1,
+    "web_search_count": 2,
     "profile_version": "1.0",
-    "based_on_checkin": "2026-10-05",
-    "verification_note": "Ajuste menor: no se han recalculado las estimaciones energéticas heredadas, que siguen apoyadas en BEDCA y USDA FoodData Central (pollo 165 kcal/100 g, arroz cocido 130, pasta seca cocida 157, pasta fresca cocida 131, lentejas cocidas 116, salmón 208, aguacate 160, aceite de oliva 884) y en la ficha de un producto concreto para la gyoza congelada (169 kcal/100 g, 9,1 g de proteína, 1,97 g de sal), variable por marca.\nNUEVO EN ESTA VERSIÓN: palomitas de maíz hechas en sartén, en torno a 370 kcal por 100 g frente a unas 500 de las de microondas, que además suben mucho en grasa y en sal. Dato tomado de un artículo divulgativo de Consumer (Fundación Eroski), no de una tabla de composición oficial, así que vale como orden de magnitud y no como cifra fina. La equivalencia de 30 g de palomitas por una ración de cereal es un cálculo propio a partir de ese valor.\nLa salsa verde deja de ser una suposición: es la que el usuario describe, perejil seco, ajo, sal y aceite en mortero. Las seis cucharadas de aceite para cuatro raciones son la ración de grasa de esas cuatro comidas.\nEl coste semanal del supermercado sigue sin verificar con precios actuales.",
+    "based_on_checkin": "2026-10-12",
+    "verification_note": "NUEVO EN ESTA VERSIÓN. Sepia: 16,1 g de proteína, 0,7 g de grasa y 71 kcal por 100 g de porción comestible, según la ficha de la sepia del Ministerio de Agricultura, Pesca y Alimentación. Es dato de fuente oficial. La misma ficha señala que la estacionalidad apenas se nota en el mercado por las importaciones, y que los mejores meses para la fresca son los de invierno. De esos 16,1 g sale la ración de unos 250 g por persona, bastante más generosa en peso que la de pollo o merluza, que rondan los 20 g de proteína por 100 g: ese cálculo de equivalencia es propio.\nLa técnica de la sepia a la plancha (secarla, sartén sin aceite muy caliente, peso encima, la salsa solo al dar la vuelta, seis minutos en total) viene de una receta divulgativa, no de una fuente técnica de cocina. Vale como procedimiento, y el reparto de tres minutos por lado es una precisión propia.\nSIN VERIFICAR, y conviene saberlo: las estimaciones energéticas de las cuatro comidas y las cuatro cenas nuevas son cálculos propios por suma de ingredientes sobre los valores ya usados en versiones anteriores (BEDCA y USDA FoodData Central para pollo, arroz, pasta, lentejas, salmón, aguacate y aceite). No se han contrastado plato a plato con ninguna tabla de platos preparados, así que sirven como orden de magnitud y no como cifra fina. Las raciones, que son la unidad de trabajo del plan, no dependen de ellas.\nEl coste semanal del supermercado sigue sin verificar con precios actuales.",
     "safeguards_applied": [
-      "El déficit NO se ha apretado pese a dos semanas de peso plano, porque el propio plan fijó la semana del 19 como primera lectura de tendencia y cambiar el criterio cada viernes según la báscula es justo lo que el plan dice que no hay que hacer.",
-      "La señal que quedó en vigilancia la semana pasada, el recorte voluntario del almuerzo, ha remitido: los cinco almuerzos cumplidos. La vigilancia se levanta.",
-      "La cena saltada del viernes se trata como lo que es, un hecho aislado en contexto social, y se resuelve añadiendo una cena que se pueda comer en el sofá, no señalándola.",
+      "El recorte del almuerzo de martes a jueves NO se ha tratado como bandera de conducta alimentaria, y es una decisión de criterio que conviene poder revisar: se declara abiertamente y sin lenguaje de culpa, se presenta como logística («no me molesto en llevarlo al trabajo»), convive con una petición de MÁS variedad y MÁS opciones, y las comidas de casa están intactas. Además la energía sube y el sueño se sostiene, de modo que no se cumple el patrón de perfección con energía baja. La respuesta es la que manda la §6: el plan se reescribe sobre lo que se come de verdad y lo retirado se recoloca. Si el recorte se extendiera a las comidas de casa, o apareciera vocabulario de culpa, cambiaría la lectura.",
+      "El déficit NO se ha apretado, por dos motivos. El primero, el de siempre: la lectura de tendencia es la del viernes 23, con cuatro semanas de línea. El segundo es nuevo y pesa más: se estaba comiendo por debajo de lo que el plan creía, así que apretar sobre el papel habría apretado sobre algo que ya iba corto.",
+      "El reequilibrio es neutro en raciones totales: la comida sigue sumando ocho y lo que se desplaza es el reparto entre proteína e hidrato. No se ha subido el aporte para tapar el hueco del almuerzo, que habría ido contra el objetivo, ni se ha bajado.",
+      "Suelo de raciones respetado con margen: el mínimo diario suma 16 y el reparto real de cada día queda entre 17 y 20,5. Los días de solo fruta son los más justos, 17, y de ahí sale la regla de que esos días la comida sea de plato de proteína.",
+      "Proteína sostenida en 5 raciones mínimas diarias incluso en los días cortos, que es lo que conviene conservar mientras baja el peso.",
+      "La cadera pasa a control mensual en vez de semanal: cuatro lecturas imposibles en cuatro semanas. Se retira el dato que no mide nada en lugar de seguir pidiéndolo, y se escribe la referencia exacta de la cintura.",
+      "Las dos medidas de este viernes se presentan como no fiables, incluida la bajada de cintura de 96 a 94, que sería la buena noticia de la semana. O la cinta estuvo bien puesta o no lo estuvo, y no cabe quedarse con la lectura favorable y descartar la otra.",
       "Perfil sin nombre, correo ni ningún dato identificativo dentro del artefacto: solo el alias y el código de usuario.",
-      "El código de usuario no cambia y ningún identificador de comida o receta se ha renombrado, así que el registro de las dos semanas sobrevive.",
-      "Suelo de raciones respetado: el mínimo diario suma 16 raciones y el reparto real de cada día queda entre 18 y 20,5.",
+      "El código de usuario no cambia y ningún identificador de comida o receta se ha renombrado, así que el registro de las tres semanas sobrevive. El hueco nuevo de media mañana es un identificador añadido, no un renombrado: las valoraciones ya guardadas bajo el hueco anterior se conservan en las semanas 1 a 3, que no se han tocado.",
       "Estimaciones energéticas mantenidas a petición expresa, presentadas como orientativas y en segundo plano respecto a las raciones.",
-      "Sin objetivo de pasos ambicioso mientras la planta del pie esté en seguimiento.",
+      "Objetivo de pasos ajustado a lo alcanzable, de 4.500 a 4.000, y sin subirlo más mientras la planta del pie esté en seguimiento.",
       "Sin diagnóstico de ninguna molestia declarada.",
-      "Vocabulario de culpa excluido del plan entero, incluida la noche de palomitas."
+      "Vocabulario de culpa excluido del plan entero, también al hablar del almuerzo que no se lleva al trabajo.",
+      "Sin suplementos de ningún tipo en el plan."
     ]
   }
 }
@@ -2516,13 +3056,14 @@ label.lbl { display: block; font-size: calc(13px * var(--fs)); font-weight: 600;
 
 <script>
 /* ============================================================
-   PANEL DE PLAN PERSONAL · template v1.4
+   PANEL DE PLAN PERSONAL · template v1.5
    Todo el estado del usuario vive en este dispositivo (IndexedDB).
    Nada se envía a ningún sitio salvo cuando se exporta a mano.
    ============================================================ */
 (function () {
 'use strict';
 
+var FONT_PNG = "-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
 var DATA = JSON.parse(document.getElementById('plan-data').textContent);
 var META = DATA.meta || {};
 var MODE = META.mode || 'ambos';
@@ -2555,6 +3096,10 @@ function todayISO() { return iso(new Date()); }
 function addDays(s, n) { var d = fromISO(s); d.setDate(d.getDate() + n); return iso(d); }
 function diffDays(a, b) { return Math.round((fromISO(b) - fromISO(a)) / 86400000); }
 var DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+function fechaCorta(iso) {
+  var d = fromISO(iso);
+  return d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3);
+}
 var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 function fechaLarga(s) { var d = fromISO(s); return DIAS[d.getDay()] + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()]; }
 function num(v) { var n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? null : n; }
@@ -2773,12 +3318,21 @@ function adherence(w) {
        del fin de semana y la adherencia saldría muy por debajo de la real. */
     if (isFuture(f)) return;
     var pd = planDay(f), d = STATE.days[f] || {};
-    if (HAS_TRAIN && pd.session_id) { prevT++; if (d.training && d.training.done) hechT++; }
+    /* El día en curso tampoco penaliza: a las ocho de la mañana no hay tres
+       comidas falladas, hay un día empezado. Solo cuenta lo ya registrado, así
+       que mirar la adherencia por la mañana no la hunde y cerrar la semana un
+       día más tarde no resta las comidas de ese día. */
+    var enCurso = f === todayISO();
+    if (HAS_TRAIN && pd.session_id && !(enCurso && !(d.training && d.training.done))) {
+      prevT++; if (d.training && d.training.done) hechT++;
+    }
     if (HAS_EAT) {
-      var ms = Object.keys(mealsOfDay(pd));
-      prevM += ms.length;
       var m = d.meals || {};
-      ms.forEach(function (k) { if (m[k] === 'si') hechM += 1; else if (m[k] === 'parcial') hechM += 0.5; });
+      Object.keys(mealsOfDay(pd)).forEach(function (k) {
+        if (enCurso && !m[k]) return;
+        prevM += 1;
+        if (m[k] === 'si') hechM += 1; else if (m[k] === 'parcial') hechM += 0.5;
+      });
     }
   });
   return {
@@ -3087,7 +3641,9 @@ function renderWeek() {
     var esActual = w.week === wActual;
     h += '<div class="card"' + (esActual ? ' style="border-color:var(--ink)"' : '') + '>' +
       '<div class="card__h"><h2>Semana ' + w.week + (w.deload ? ' · descarga' : '') + '</h2>' +
-      (esActual ? '<span class="chip chip--train">En curso</span>' : '') + '</div>' +
+      (esActual ? '<span class="chip chip--train">En curso</span>' : '') +
+      (HAS_EAT ? '<button type="button" class="btn btn--s btn--ghost" data-grid="' + w.week + '">Ver cuadrante</button>' : '') +
+      '</div>' +
       (w.focus ? '<p class="hint" style="margin-bottom:12px">' + esc(w.focus) + '</p>' : '') +
       '<div class="wk">';
     (w.days || []).forEach(function (d) {
@@ -3117,7 +3673,7 @@ function renderWeek() {
       if (ad.nutrition_pct != null) {
         h += barra('Comidas', ad.nutrition_pct, '--eat');
         h += '<p class="tiny mute" style="margin-top:4px">Sobre ' + fmt(ad.meals_planned) +
-             ' comidas de los días que ya han pasado. Los que faltan no cuentan.</p>';
+             ' comidas ya registradas. El día de hoy sin terminar y los que faltan no cuentan.</p>';
       }
     }
     if (w.notes) h += '<p class="hint" style="margin-top:10px">' + esc(w.notes) + '</p>';
@@ -3165,6 +3721,219 @@ function agendaHTML(w) {
       '</div></div>';
   });
   return out;
+}
+
+/* ============================================================
+   CUADRANTE SEMANAL
+   Filas = huecos del día (primera comida, comida, cena), no comidas: media
+   mañana y desayuno comparten hueco porque ningún día tiene las dos.
+   ============================================================ */
+var GRID_ON = null;   /* número de semana abierta, o null */
+var GRID_ROT = 0;     /* 0: días en filas (vertical). 1: días en columnas. */
+
+function weekByNum(n) {
+  return (DATA.weeks || []).filter(function (w) { return w.week === n; })[0] || null;
+}
+
+/* Para cada hueco, qué comida le toca a cada día y cómo se llama el hueco. */
+function gridSlots(w) {
+  var dias = (w.days || []), slots = [];
+  dias.forEach(function (d) {
+    Object.keys(mealsOfDay(d)).forEach(function (mid, i) {
+      if (!slots[i]) slots[i] = { nombres: [], por_dia: {} };
+      slots[i].por_dia[d.date] = mid;
+      var m = mealById(mid);
+      if (m && slots[i].nombres.indexOf(m.name) < 0) slots[i].nombres.push(m.name);
+    });
+  });
+  slots.forEach(function (s) { s.label = s.nombres.join(' · '); });
+  return slots;
+}
+
+/* Qué hay puesto en una comida de un día, y si eso es un cambio del usuario. */
+function gridCell(fecha, mealId) {
+  var m = mealById(mealId); if (!m) return null;
+  var pd = planDay(fecha);
+  var prev = (mealsOfDay(pd) || {})[mealId];
+  var puesta = pickedOption(fecha, mealId, prev);
+  var op = function (id) { return (m.options || []).filter(function (o) { return o.id === id; })[0]; };
+  return {
+    meal: m,
+    ahora: op(puesta) || op(prev) || (m.options || [])[0] || {},
+    antes: puesta !== prev ? (op(prev) || {}) : null,
+    estado: ((STATE.days[fecha] || {}).meals || {})[mealId] || ''
+  };
+}
+
+function gridCellHTML(fecha, mealId, cabecera) {
+  if (!mealId) return '<div class="gc gc--off" aria-hidden="true"></div>';
+  var c = gridCell(fecha, mealId); if (!c) return '<div class="gc gc--off"></div>';
+  var cls = 'gc';
+  if (fecha === todayISO()) cls += ' is-today';
+  else if (isFuture(fecha)) cls += ' is-future';
+  if (c.antes) cls += ' is-swap';
+  return '<button type="button" class="' + cls + '" data-gcell="' + esc(fecha) + '|' + esc(mealId) + '"' +
+    ' aria-label="' + esc(c.meal.name + ' del ' + fechaLarga(fecha) + ': ' + (c.ahora.title || '')) + '">' +
+    (c.meal.name !== cabecera ? '<span class="gc__m">' + esc(c.meal.name) + '</span>' : '') +
+    '<span class="gc__t">' + esc(c.ahora.title || '—') + '</span>' +
+    (c.antes ? '<span class="gc__was">en vez de ' + esc(c.antes.title || '—') + '</span>' : '') +
+    (c.estado ? '<span class="gc__st">' + MEAL_LABEL[c.estado] + '</span>' : '') +
+    '</button>';
+}
+
+function gridHTML(w) {
+  var slots = gridSlots(w), dias = (w.days || []);
+  if (!slots.length) return '<div class="empty">Este plan no lleva comidas.</div>';
+  var h = '', estilo;
+  if (GRID_ROT === 0) {
+    /* Días en filas: una fila por día, una columna por hueco. Cabe de pie. */
+    /* 45 + 3x98 + huecos + margen entra en los 390 px de un móvil de pie, que es
+       donde se consulta esto. Con el texto ampliado se sale, y entonces el
+       contenedor hace scroll horizontal, que es lo que toca. */
+    estilo = 'grid-template-columns: calc(45px * var(--fs)) repeat(' + slots.length +
+             ', minmax(calc(98px * var(--fs)), 1fr))';
+    h += '<div class="gh gh--corner"></div>';
+    slots.forEach(function (s) { h += '<div class="gh">' + esc(s.label) + '</div>'; });
+    dias.forEach(function (d) {
+      h += '<div class="gh gh--day' + (d.date === todayISO() ? ' is-today' : '') + '">' +
+        '<b>' + esc((d.weekday || '').slice(0, 3)) + '</b><span>' + fromISO(d.date).getDate() + '</span></div>';
+      slots.forEach(function (s) { h += gridCellHTML(d.date, s.por_dia[d.date], s.label); });
+    });
+  } else {
+    /* Días en columnas: el cuadrante clásico, para apaisado o pantalla grande. */
+    estilo = 'grid-template-columns: calc(72px * var(--fs)) repeat(' + dias.length +
+             ', minmax(calc(128px * var(--fs)), 1fr))';
+    h += '<div class="gh gh--corner"></div>';
+    dias.forEach(function (d) {
+      h += '<div class="gh gh--day' + (d.date === todayISO() ? ' is-today' : '') + '">' +
+        '<b>' + esc((d.weekday || '').slice(0, 3)) + '</b><span>' + fromISO(d.date).getDate() + '</span></div>';
+    });
+    slots.forEach(function (s) {
+      h += '<div class="gh">' + esc(s.label) + '</div>';
+      dias.forEach(function (d) { h += gridCellHTML(d.date, s.por_dia[d.date], s.label); });
+    });
+  }
+  return '<div class="grid__g" style="' + estilo + '">' + h + '</div>';
+}
+
+function renderGrid() {
+  if (GRID_ON == null) return;
+  var w = weekByNum(GRID_ON); if (!w) return;
+  el('#grid-title').textContent = 'Semana ' + w.week + ' · ' + fechaCorta(w.days[0].date) +
+    ' al ' + fechaCorta(w.days[w.days.length - 1].date);
+  el('#grid-scroll').innerHTML = gridHTML(w) +
+    '<p class="hint" style="margin:12px 2px 0">Cada casilla se toca para cambiar esa comida, también en los días ' +
+    'que aún no han llegado. Las que llevan una marca verde a la izquierda son las que ya cambiaste: debajo queda ' +
+    'escrito lo que había previsto.</p>';
+}
+
+function openGrid(n) {
+  GRID_ON = n;
+  renderGrid();
+  el('#grid').classList.add('is-on');
+  document.body.style.overflow = 'hidden';
+}
+function closeGrid() {
+  GRID_ON = null;
+  el('#grid').classList.remove('is-on');
+  document.body.style.overflow = '';
+}
+function rotateGrid() {
+  GRID_ROT = GRID_ROT ? 0 : 1;
+  setKV('grid_rot', GRID_ROT);
+  el('#grid-scroll').scrollLeft = 0;
+  renderGrid();
+}
+
+/* ---------- el cuadrante como imagen, para imprimir o pegar en la nevera ---------- */
+function wrapText(g, texto, ancho, max) {
+  var palabras = String(texto || '').split(/\s+/), lineas = [], linea = '';
+  for (var i = 0; i < palabras.length; i++) {
+    var prueba = linea ? linea + ' ' + palabras[i] : palabras[i];
+    if (g.measureText(prueba).width > ancho && linea) { lineas.push(linea); linea = palabras[i]; }
+    else linea = prueba;
+  }
+  if (linea) lineas.push(linea);
+  if (lineas.length > max) { lineas = lineas.slice(0, max); lineas[max - 1] = lineas[max - 1].replace(/.{0,2}$/, '…'); }
+  return lineas;
+}
+
+function gridPNG() {
+  var w = GRID_ON != null ? weekByNum(GRID_ON) : null; if (!w) return;
+  var slots = gridSlots(w), dias = (w.days || []);
+  var LW = 112, CW = 182, HH = 56, RH = 128, P = 26, TH = 62;
+  var AN = LW + CW * dias.length + P * 2;
+  var AL = TH + HH + RH * slots.length + P * 2;
+  var cv = document.createElement('canvas');
+  var g = cv.getContext ? cv.getContext('2d') : null;
+  if (!g || !cv.toBlob || !(window.URL && URL.createObjectURL)) {
+    toast('Este navegador no deja guardar la imagen. El cuadrante de pantalla sigue ahí.');
+    return;
+  }
+  cv.width = AN * 2; cv.height = AL * 2;
+  g.scale(2, 2);
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, AN, AL);
+  g.textBaseline = 'top';
+
+  g.fillStyle = '#16202B';
+  g.font = '700 23px ' + FONT_PNG;
+  g.fillText('Semana ' + w.week + ' · ' + ((DATA.meta || {}).alias || ''), P, P);
+  g.fillStyle = '#6E7C8A'; g.font = '14px ' + FONT_PNG;
+  g.fillText(fechaCorta(dias[0].date) + ' al ' + fechaCorta(dias[dias.length - 1].date) +
+             (w.deload ? ' · semana de descarga' : ''), P, P + 31);
+
+  var y0 = P + TH;
+  dias.forEach(function (d, i) {
+    var x = P + LW + CW * i;
+    var esHoy = d.date === todayISO();
+    g.fillStyle = esHoy ? '#16202B' : '#EEF1F4';
+    g.fillRect(x, y0, CW - 5, HH - 5);
+    g.fillStyle = esHoy ? '#FFFFFF' : '#3D4B59';
+    g.font = '700 15px ' + FONT_PNG;
+    g.fillText((d.weekday || '').slice(0, 3).toUpperCase() + ' ' + fromISO(d.date).getDate(), x + 11, y0 + 14);
+  });
+
+  slots.forEach(function (s, r) {
+    var y = y0 + HH + RH * r;
+    g.fillStyle = '#3D4B59'; g.font = '700 13px ' + FONT_PNG;
+    wrapText(g, s.label, LW - 12, 3).forEach(function (l, k) { g.fillText(l, P, y + 12 + k * 17); });
+    dias.forEach(function (d, i) {
+      var x = P + LW + CW * i, mid = s.por_dia[d.date];
+      g.fillStyle = '#FFFFFF'; g.fillRect(x, y, CW - 5, RH - 5);
+      g.strokeStyle = '#D6DCE3'; g.lineWidth = 1;
+      g.strokeRect(x + .5, y + .5, CW - 6, RH - 6);
+      if (!mid) return;
+      var c = gridCell(d.date, mid); if (!c) return;
+      if (c.antes) { g.fillStyle = '#4C6B3C'; g.fillRect(x, y, 3, RH - 5); }
+      var yy = y + 11;
+      if (c.meal.name !== s.label) {
+        g.fillStyle = '#6E7C8A'; g.font = '11px ' + FONT_PNG;
+        g.fillText(c.meal.name, x + 11, yy); yy += 15;
+      }
+      g.fillStyle = '#16202B'; g.font = '600 14px ' + FONT_PNG;
+      wrapText(g, c.ahora.title, CW - 24, 3).forEach(function (l) { g.fillText(l, x + 11, yy); yy += 18; });
+      if (c.antes) {
+        g.fillStyle = '#6E7C8A'; g.font = 'italic 11px ' + FONT_PNG;
+        wrapText(g, 'en vez de ' + (c.antes.title || ''), CW - 24, 2).forEach(function (l) {
+          g.fillText(l, x + 11, yy); yy += 14;
+        });
+      }
+      if (c.estado) {
+        g.fillStyle = '#6E7C8A'; g.font = '11px ' + FONT_PNG;
+        g.fillText(MEAL_WORD[c.estado] || '', x + 11, y + RH - 23);
+      }
+    });
+  });
+
+  cv.toBlob(function (b) {
+    if (!b) { toast('No se pudo crear la imagen.'); return; }
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = 'cuadrante-semana-' + w.week + '.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+    toast('Cuadrante guardado como imagen.');
+  }, 'image/png');
 }
 
 function barra(label, pct, mod) {
@@ -3515,19 +4284,22 @@ function openRecipe(id) {
     (r.notes ? '<p class="hint">' + esc(r.notes) + '</p>' : '');
   openSheet(r.title, h);
 }
-function openMealPicker(mealId) {
+/* La fecha es opcional: desde la pestaña de hoy se cambia la opción del día
+   activo, y desde el cuadrante, la de cualquier día de la semana. */
+function openMealPicker(mealId, fecha) {
   var m = mealById(mealId); if (!m) return;
-  var date = activeDate();
+  var date = fecha || activeDate();
   var actual = pickedOption(date, mealId, mealsOfDay(planDay(date))[mealId]);
   var h = '<p class="hint">Todas las opciones suman lo mismo, así que se elige por apetito, por lo que haya en la nevera o por el tiempo que tengas.</p>';
   (m.options || []).forEach(function (o) {
-    h += '<button class="opt' + (o.id === actual ? ' is-picked' : '') + '" data-pick="' + esc(mealId) + '|' + esc(o.id) + '">' +
+    h += '<button class="opt' + (o.id === actual ? ' is-picked' : '') + '" data-pick="' +
+      esc(mealId) + '|' + esc(o.id) + '|' + esc(date) + '">' +
       '<div class="opt__t">' + esc(o.title) + '</div>' +
       (o.description ? '<div class="opt__d">' + esc(o.description) + '</div>' : '') +
       '<div class="opt__m">' + rationsHTML(o.rations) +
       (o.prep_min ? '<span class="chip">' + o.prep_min + ' min</span>' : '') + '</div></button>';
   });
-  openSheet(m.name, h);
+  openSheet(m.name + (fecha && fecha !== todayISO() ? ' · ' + fechaCorta(fecha) : ''), h);
 }
 function openMeasures() {
   var last = (weightSeries().slice(-1)[0]) || {};
@@ -3804,7 +4576,23 @@ document.addEventListener('click', function (ev) {
   if (pick) {
     var p = pick.dataset.pick.split('|');
     var picks = {}; picks[p[0]] = p[1];
-    saveDayLog(activeDate(), { picks: picks }).then(function () { closeSheet(); renderToday(); });
+    saveDayLog(p[2] || activeDate(), { picks: picks }).then(function () {
+      closeSheet(); renderToday(); renderWeek();
+      /* Si el cambio viene del cuadrante, el cuadrante se redibuja debajo. */
+      if (GRID_ON != null) renderGrid();
+    });
+    return;
+  }
+
+  var gbtn = t.closest('[data-grid]');
+  if (gbtn) { openGrid(parseInt(gbtn.dataset.grid, 10)); return; }
+  if (t.closest('[data-grid-close]')) { closeGrid(); return; }
+  if (t.closest('[data-grid-rot]')) { rotateGrid(); return; }
+  if (t.closest('[data-grid-png]')) { gridPNG(); return; }
+  var gcell = t.closest('[data-gcell]');
+  if (gcell) {
+    var gp = gcell.dataset.gcell.split('|');
+    openMealPicker(gp[1], gp[0]);
     return;
   }
 
@@ -4060,6 +4848,7 @@ document.addEventListener('click', function (ev) {
 });
 
 loadState().then(function () {
+  GRID_ROT = parseInt(getKV('grid_rot', 0), 10) || 0;
   applyTextSize(getKV('text_scale', 0), false);
   renderAll();
   checkAchievements();
